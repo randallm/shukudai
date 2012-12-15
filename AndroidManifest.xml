@@ -33,6 +33,17 @@
             android:name="com.randallma.whatsthehomework.TestPost"
             android:label="@string/title_activity_test_post" >
         </activity>
+        <activity
+            android:name="com.randallma.whatsthehomework.PostAssignmentActivity"
+            android:label="@string/title_activity_post_assignment" >
+        </activity>
+        <activity
+            android:name="com.randallma.whatsthehomework.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="nosensor"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
     </application>
 
 </manifest>
