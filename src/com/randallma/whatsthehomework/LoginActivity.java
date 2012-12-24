@@ -1,5 +1,7 @@
 package com.randallma.whatsthehomework;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -58,7 +60,6 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onSuccess(String response) {
 				LinearLayout loginStatus = (LinearLayout) findViewById(R.id.login_status);
-				System.out.println(response);
 
 				if (response.equals("wrong")) {
 					TextView view = (TextView) findViewById(R.id.login_response);
@@ -77,16 +78,22 @@ public class LoginActivity extends Activity {
 			
 		});
 		
-		// test user logged in:
-		client.get("http://192.168.1.42:5000/testperms/", new AsyncHttpResponseHandler() {
-			@Override
-			public void onSuccess(String response) {
-				System.out.println(response);
-			}
-		});
+//		// test user logged in:
+//		client.get("http://192.168.1.42:5000/testperms/", new AsyncHttpResponseHandler() {
+//			@Override
+//			public void onSuccess(String response) {
+//				System.out.println(response);
+//			}
+//		});
+	
+//		System.out.println(cookieStore.getCookies());
 		
-//		Intent intent = new Intent(this, NewsFeedActivity.class);
-//		intent.putExtra(CLIENT_SESSION, client);
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+		g.setClientSession(client);
+		g.setCookieStore(cookieStore);
+		
+		Intent showNewsFeedIntent = new Intent(this, MainActivity.class);
+		startActivity(showNewsFeedIntent);
 	}
 	
 	@Override
