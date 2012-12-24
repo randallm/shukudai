@@ -1,6 +1,7 @@
 package com.randallma.whatsthehomework;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -10,6 +11,12 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+//		 check if logged in
+	
+		Intent myIntent = new Intent(this, LoginActivity.class);
+		startActivity(myIntent);
+		
 	}
 	
 	@Override
