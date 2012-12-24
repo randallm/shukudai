@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 
 public class MainActivity extends Activity {
@@ -42,8 +42,16 @@ public class MainActivity extends Activity {
 //			}
 //		});
 		
-		// otherwise, display news feed
+		// otherwise, display news feed:
 		
+		clientSession.get("http://192.168.1.42:5000/motd/", new AsyncHttpResponseHandler() {
+			@Override
+			public void onSuccess(String response) {
+				TextView motd = (TextView) findViewById(R.id.motd);
+				motd.setText("Wecome, " + response);
+			}
+		});
+				
 	}
 		
 	@Override

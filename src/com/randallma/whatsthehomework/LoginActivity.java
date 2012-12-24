@@ -77,14 +77,6 @@ public class LoginActivity extends Activity {
 			}
 			
 		});
-		
-//		// test user logged in:
-//		client.get("http://192.168.1.42:5000/testperms/", new AsyncHttpResponseHandler() {
-//			@Override
-//			public void onSuccess(String response) {
-//				System.out.println(response);
-//			}
-//		});
 	
 //		System.out.println(cookieStore.getCookies());
 		
