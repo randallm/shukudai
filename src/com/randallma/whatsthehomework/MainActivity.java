@@ -51,6 +51,10 @@ public class MainActivity extends Activity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
+						// bad session in cookie fallthrough
+						if (response.equals("False")) {
+							login();
+						}
 						TextView motd = (TextView) findViewById(R.id.motd);
 						motd.setText("Welcome, " + response + ".");
 					}
