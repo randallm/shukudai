@@ -7,5 +7,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_test_post">TestPost</string>
     <string name="title_activity_post_assignment">PostAssignmentActivity</string>
+    <string name="menu_log_out">Log out</string>
 
 </resources>
