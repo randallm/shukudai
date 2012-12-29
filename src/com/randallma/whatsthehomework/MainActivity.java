@@ -45,67 +45,67 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		AsyncHttpClient clientSession = new AsyncHttpClient();
-		PersistentCookieStore cookieStore = g.getCookieStore();
-		clientSession.setCookieStore(cookieStore);
 		boolean userLoggedIn = g.getUserLoggedIn();
-
 		if (!userLoggedIn) {
 			login();
-		}
+		} else {
+			AsyncHttpClient clientSession = new AsyncHttpClient();
+			PersistentCookieStore cookieStore = g.getCookieStore();
+			clientSession.setCookieStore(cookieStore);
 
-		clientSession.get("http://192.168.1.42:5000/motd/",
-				new AsyncHttpResponseHandler() {
-					@Override
-					public void onSuccess(String response) {
-						// bad session in cookie fallthrough
-						if (response.equals("False")) {
-							login();
-						}
-						TextView motd = (TextView) findViewById(R.id.motd);
-						motd.setText("Welcome, " + response + ".");
-					}
-				});
-
-		clientSession.get("http://192.168.1.42:5000/news/dummy/all/",
-				new JsonHttpResponseHandler() {
-					@Override
-					public void onSuccess(JSONObject response) {
-
-						JSONArray assignments = null;
-						try {
-							assignments = response.getJSONArray("assignments");
-							JSONObject c = assignments.getJSONObject(0);
-							for (int i = 0; i < assignments.length() + 1; i++) {
-
-								JSONObject individualAssignment = new JSONObject(
-										c.getString(Integer.toString(i)));
-
-								String photo = individualAssignment
-										.getString("photo");
-								String dateAssigned = individualAssignment
-										.getString("date_assigned");
-								String dateDue = individualAssignment
-										.getString("date_due");
-								String description = individualAssignment
-										.getString("description");
-
-								HashMap<String, String> map = new HashMap<String, String>();
-								map.put("photo", photo);
-								map.put("dateAssigned", dateAssigned);
-								map.put("dateDue", dateDue);
-								map.put("description", description);
-
-								System.out.println(map);
+			clientSession.get("http://192.168.1.42:5000/motd/",
+					new AsyncHttpResponseHandler() {
+						@Override
+						public void onSuccess(String response) {
+							// bad session in cookie fallthrough
+							if (response.equals("False")) {
+								login();
 							}
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							TextView motd = (TextView) findViewById(R.id.motd);
+							motd.setText("Welcome, " + response + ".");
 						}
+					});
 
-					}
-				});
+			clientSession.get("http://192.168.1.42:5000/news/dummy/all/",
+					new JsonHttpResponseHandler() {
+						@Override
+						public void onSuccess(JSONObject response) {
 
+							JSONArray assignments = null;
+							try {
+								assignments = response
+										.getJSONArray("assignments");
+								JSONObject c = assignments.getJSONObject(0);
+								for (int i = 0; i < assignments.length() + 1; i++) {
+
+									JSONObject individualAssignment = new JSONObject(
+											c.getString(Integer.toString(i)));
+
+									String photo = individualAssignment
+											.getString("photo");
+									String dateAssigned = individualAssignment
+											.getString("date_assigned");
+									String dateDue = individualAssignment
+											.getString("date_due");
+									String description = individualAssignment
+											.getString("description");
+
+									HashMap<String, String> map = new HashMap<String, String>();
+									map.put("photo", photo);
+									map.put("dateAssigned", dateAssigned);
+									map.put("dateDue", dateDue);
+									map.put("description", description);
+
+									System.out.println(map);
+								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+						}
+					});
+		}
 	}
 
 	@Override
