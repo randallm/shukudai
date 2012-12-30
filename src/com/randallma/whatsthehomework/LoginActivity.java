@@ -55,15 +55,15 @@ public class LoginActivity extends Activity {
 
 	private void attemptLogin(EditText attemptUsername, EditText attemptPassword) {
 		AsyncHttpClient client = new AsyncHttpClient();
-
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		client.setCookieStore(cookieStore);
 
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 		RequestParams params = new RequestParams();
 		params.put("username", attemptUsername.getText().toString());
 		params.put("password", attemptPassword.getText().toString());
 
-		client.post("http://192.168.1.42:5000/login/", params,
+		client.post(g.getWthUrl() + "/login/", params,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onStart() {

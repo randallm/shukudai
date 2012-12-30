@@ -34,7 +34,9 @@ public class MainActivity extends ListActivity {
 		AsyncHttpClient clientSession = new AsyncHttpClient();
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		cookieStore.clear();
-		clientSession.get("http://192.168.1.42:5000/logout/",
+
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+		clientSession.get(g.getWthUrl() + "/logout/",
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onFinish() {
@@ -48,7 +50,8 @@ public class MainActivity extends ListActivity {
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		clientSession.setCookieStore(cookieStore);
 
-		clientSession.get("http://192.168.1.42:5000/verifyloggedin/",
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+		clientSession.get(g.getWthUrl() + "/verifyloggedin/",
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onFailure(Throwable e, String response) {
@@ -78,11 +81,11 @@ public class MainActivity extends ListActivity {
 
 	private void motd() {
 		AsyncHttpClient clientSession = new AsyncHttpClient();
-		// PersistentCookieStore cookieStore = g.getCookieStore();
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		clientSession.setCookieStore(cookieStore);
 
-		clientSession.get("http://192.168.1.42:5000/motd/",
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+		clientSession.get(g.getWthUrl() + "/motd/",
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
@@ -114,7 +117,9 @@ public class MainActivity extends ListActivity {
 		AsyncHttpClient clientSession = new AsyncHttpClient();
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		clientSession.setCookieStore(cookieStore);
-		clientSession.get("http://192.168.1.42:5000/news/dummy/all/",
+
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+		clientSession.get(g.getWthUrl() + "/news/dummy/all/",
 				new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(JSONObject response) {
