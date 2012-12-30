@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -56,6 +57,7 @@ public class MainActivity extends ListActivity {
 		if (!userLoggedIn) {
 			login();
 		} else {
+			motd();
 
 			SimpleAdapter adapter = new SimpleAdapter(this, newsFeed,
 					R.layout.assignment_list_row_view, new String[] { "photo",
@@ -64,8 +66,29 @@ public class MainActivity extends ListActivity {
 							R.id.description });
 
 			getNewsJson();
-
 		}
+	}
+
+	private void motd() {
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+		AsyncHttpClient clientSession = new AsyncHttpClient();
+		PersistentCookieStore cookieStore = g.getCookieStore();
+		clientSession.setCookieStore(cookieStore);
+
+		clientSession.get("http://192.168.1.42:5000/motd/",
+				new AsyncHttpResponseHandler() {
+					@Override
+					public void onSuccess(String response) {
+						Toast toast = Toast.makeText(MainActivity.this,
+								"Logged in as " + response, Toast.LENGTH_SHORT);
+						toast.show();
+					}
+
+					@Override
+					public void onFailure(Throwable c, String response) {
+						login();
+					}
+				});
 	}
 
 	private SimpleAdapter initAdapter(
