@@ -4,13 +4,24 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <TextView
+    <!--  <TextView
         android:id="@+id/motd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="32dp" />
+        android:layout_marginTop="32dp" />-->
+   
+   <ListView android:id="@id/android:list"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent"></ListView>
+   
+   
+   <!-- TODO: do something with this -->
+   <TextView android:id="@id/android:empty"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+       android:text="No data" />
    
 </RelativeLayout>
