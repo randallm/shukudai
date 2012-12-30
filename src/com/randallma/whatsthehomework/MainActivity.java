@@ -57,13 +57,11 @@ public class MainActivity extends ListActivity {
 			login();
 		} else {
 
-			SimpleAdapter adapter = new SimpleAdapter(
-					this,
-					newsFeed,
-					R.layout.assignment_list_row_view,
-					new String[] { "photo", "dateAssigned", "dateDue",
-							"description" },
-					new int[] { R.id.photo, R.id.dateAssigned, R.id.dateDue, R.id.description });
+			SimpleAdapter adapter = new SimpleAdapter(this, newsFeed,
+					R.layout.assignment_list_row_view, new String[] { "photo",
+							"dateAssigned", "dateDue", "description" },
+					new int[] { R.id.photo, R.id.dateAssigned, R.id.dateDue,
+							R.id.description });
 
 			getNewsJson();
 
@@ -75,7 +73,8 @@ public class MainActivity extends ListActivity {
 		SimpleAdapter adapter = new SimpleAdapter(this, newsFeed,
 				R.layout.assignment_list_row_view, new String[] { "photo",
 						"dateAssigned", "dateDue", "description" }, new int[] {
-						R.id.photo, R.id.dateAssigned, R.id.dateDue, R.id.description });
+						R.id.photo, R.id.dateAssigned, R.id.dateDue,
+						R.id.description });
 		return adapter;
 	}
 
@@ -129,8 +128,6 @@ public class MainActivity extends ListActivity {
 
 					@Override
 					public void onFailure(Throwable e, String response) {
-						// TODO: catch network errors (if fail, don't clear news
-						// feed)
 					}
 				});
 	}
