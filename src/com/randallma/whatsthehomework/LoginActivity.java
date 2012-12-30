@@ -73,36 +73,25 @@ public class LoginActivity extends Activity {
 
 					@Override
 					public void onSuccess(String response) {
-						ApplicationGlobal g = (ApplicationGlobal) getApplication();
-
 						if (response.equals("bad_user_or_pass")) {
 							TextView view = (TextView) findViewById(R.id.login_response);
 							view.setText("Invalid username or password");
-							g.setUserLoggedIn(false);
 
 							LinearLayout loginStatus = (LinearLayout) findViewById(R.id.login_status);
 							loginStatus.setVisibility(View.GONE);
 
 						} else {
-							g.setUserLoggedIn(true);
 							loginRedirect();
 						}
 					}
 
 					@Override
 					public void onFailure(Throwable e, String response) {
-						// catch network errors
-						ApplicationGlobal g = (ApplicationGlobal) getApplication();
-						g.setUserLoggedIn(false);
-
 						LinearLayout loginStatus = (LinearLayout) findViewById(R.id.login_status);
 						loginStatus.setVisibility(View.GONE);
 					}
 
 				});
-
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		g.setCookieStore(cookieStore);
 	}
 
 	@Override

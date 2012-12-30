@@ -25,8 +25,6 @@ public class MainActivity extends ListActivity {
 	SimpleAdapter adapter;
 
 	private void login() {
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		g.setUserLoggedIn(false);
 		Intent loginActivityIntent = new Intent(this, LoginActivity.class);
 		startActivity(loginActivityIntent);
 		finish();
@@ -34,10 +32,26 @@ public class MainActivity extends ListActivity {
 
 	private void logout() {
 		AsyncHttpClient clientSession = new AsyncHttpClient();
+		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
+		cookieStore.clear();
 		clientSession.get("http://192.168.1.42:5000/logout/",
 				new AsyncHttpResponseHandler() {
 					@Override
-					public void onSuccess(String response) {
+					public void onFinish() {
+						login();
+					}
+				});
+	}
+
+	private void checkLogin() {
+		AsyncHttpClient clientSession = new AsyncHttpClient();
+		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
+		clientSession.setCookieStore(cookieStore);
+
+		clientSession.get("http://192.168.1.42:5000/verifyloggedin/",
+				new AsyncHttpResponseHandler() {
+					@Override
+					public void onFailure(Throwable e, String response) {
 						login();
 					}
 				});
@@ -48,31 +62,24 @@ public class MainActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+		checkLogin();
+		motd();
 
-		boolean userLoggedIn = g.getUserLoggedIn();
-		AsyncHttpClient clientSession = new AsyncHttpClient();
-		PersistentCookieStore cookieStore = g.getCookieStore();
-		clientSession.setCookieStore(cookieStore);
-		if (!userLoggedIn) {
-			login();
-		} else {
-			motd();
+		@SuppressWarnings("unused")
+		SimpleAdapter adapter = new SimpleAdapter(this, newsFeed,
+				R.layout.assignment_list_row_view, new String[] { "photo",
+						"dateAssigned", "dateDue", "description" }, new int[] {
+						R.id.photo, R.id.dateAssigned, R.id.dateDue,
+						R.id.description });
 
-			SimpleAdapter adapter = new SimpleAdapter(this, newsFeed,
-					R.layout.assignment_list_row_view, new String[] { "photo",
-							"dateAssigned", "dateDue", "description" },
-					new int[] { R.id.photo, R.id.dateAssigned, R.id.dateDue,
-							R.id.description });
-
-			getNewsJson();
-		}
+		getNewsJson();
+		// }
 	}
 
 	private void motd() {
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 		AsyncHttpClient clientSession = new AsyncHttpClient();
-		PersistentCookieStore cookieStore = g.getCookieStore();
+		// PersistentCookieStore cookieStore = g.getCookieStore();
+		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		clientSession.setCookieStore(cookieStore);
 
 		clientSession.get("http://192.168.1.42:5000/motd/",
@@ -104,9 +111,8 @@ public class MainActivity extends ListActivity {
 	ArrayList<HashMap<String, String>> newsFeed = new ArrayList<HashMap<String, String>>();
 
 	private void getNewsJson() {
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 		AsyncHttpClient clientSession = new AsyncHttpClient();
-		PersistentCookieStore cookieStore = g.getCookieStore();
+		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		clientSession.setCookieStore(cookieStore);
 		clientSession.get("http://192.168.1.42:5000/news/dummy/all/",
 				new JsonHttpResponseHandler() {
