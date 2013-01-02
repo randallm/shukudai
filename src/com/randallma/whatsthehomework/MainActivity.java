@@ -71,9 +71,16 @@ public class MainActivity extends ListActivity {
 		checkLogin();
 		motd();
 
+		ArrayList<NewsEntry> newsFeed = new ArrayList<NewsEntry>();
+		NewsEntriesAdapter adapter = new NewsEntriesAdapter(MainActivity.this,
+				newsFeed);
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+		g.setNewsFeed(newsFeed);
+		g.setAdapter(adapter);
+
 		final ListView lv = (ListView) findViewById(android.R.id.list);
-		updateNews();
-		// lv.setAdapter(adapter);
+
+		getNews();
 
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -86,6 +93,7 @@ public class MainActivity extends ListActivity {
 						Toast.LENGTH_SHORT).show();
 			}
 		});
+
 	}
 
 	private void motd() {
@@ -110,13 +118,13 @@ public class MainActivity extends ListActivity {
 				});
 	}
 
-	private void updateNews() {
+	private void getNews() {
 		AsyncHttpClient clientSession = new AsyncHttpClient();
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		clientSession.setCookieStore(cookieStore);
 
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		clientSession.get(g.getWthUrl() + "/news/dummy/all/",
+		clientSession.get(g.getWthUrl() + "/news/dummy/all/1/",
 				new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(JSONObject response) {
@@ -125,9 +133,9 @@ public class MainActivity extends ListActivity {
 							assignments = response.getJSONArray("assignments");
 							JSONObject c = assignments.getJSONObject(0);
 
-							ArrayList<NewsEntry> newsFeed = new ArrayList<NewsEntry>();
-							NewsEntriesAdapter adapter = new NewsEntriesAdapter(
-									MainActivity.this, newsFeed);
+							ApplicationGlobal g = (ApplicationGlobal) getApplication();
+							ArrayList<NewsEntry> newsFeed = g.getNewsFeed();
+							NewsEntriesAdapter adapter = g.getAdapter();
 
 							for (int i = 0; i < assignments.length() + 1; i++) {
 
@@ -163,6 +171,56 @@ public class MainActivity extends ListActivity {
 				});
 	}
 
+	public void refreshNews() {
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+
+		AsyncHttpClient clientSession = new AsyncHttpClient();
+		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
+		clientSession.setCookieStore(cookieStore);
+
+		clientSession.get(g.getWthUrl() + "/news/dummy/all/2/",
+				new JsonHttpResponseHandler() {
+					@Override
+					public void onSuccess(JSONObject response) {
+						JSONArray assignments = new JSONArray();
+						try {
+							assignments = response.getJSONArray("assignments");
+							JSONObject c = assignments.getJSONObject(0);
+
+							ApplicationGlobal g = (ApplicationGlobal) getApplication();
+							ArrayList<NewsEntry> newsFeed = g.getNewsFeed();
+							NewsEntriesAdapter adapter = g.getAdapter();
+
+							for (int i = 0; i < assignments.length() + 1; i++) {
+
+								JSONObject a = new JSONObject(c
+										.getString(Integer.toString(i)));
+
+								NewsEntry newsEntry = new NewsEntry();
+								newsEntry.setPhoto(a.getString("photo"));
+								newsEntry.setDateDue(a.getString("date_due"));
+								newsEntry.setDateAssigned(a
+										.getString("date_assigned"));
+								newsEntry.setDescription(a
+										.getString("description"));
+								newsFeed.add(0, newsEntry);
+
+								adapter.notifyDataSetChanged();
+							}
+
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+
+					}
+
+					@Override
+					public void onFailure(Throwable e, String response) {
+					}
+				});
+
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -173,13 +231,15 @@ public class MainActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.refresh_news_feed:
+			refreshNews();
+			return true;
 		case R.id.menu_settings:
 			return true;
 		case R.id.logout:
 			System.out.println("logging out");
 			logout();
 			return true;
-
 		default:
 			return super.onOptionsItemSelected(item);
 		}
