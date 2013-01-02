@@ -1,7 +1,6 @@
 package com.randallma.whatsthehomework;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,7 +11,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SimpleAdapter;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -22,8 +24,6 @@ import com.loopj.android.http.PersistentCookieStore;
 
 public class MainActivity extends ListActivity {
 
-	SimpleAdapter adapter;
-
 	private void login() {
 		Intent loginActivityIntent = new Intent(this, LoginActivity.class);
 		startActivity(loginActivityIntent);
@@ -31,18 +31,21 @@ public class MainActivity extends ListActivity {
 	}
 
 	private void logout() {
-		AsyncHttpClient clientSession = new AsyncHttpClient();
+		// AsyncHttpClient clientSession = new AsyncHttpClient();
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		cookieStore.clear();
 
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		clientSession.get(g.getWthUrl() + "/logout/",
-				new AsyncHttpResponseHandler() {
-					@Override
-					public void onFinish() {
-						login();
-					}
-				});
+		// unnecessary because session is cleared
+		// ApplicationGlobal g = (ApplicationGlobal) getApplication();
+		// clientSession.get(g.getWthUrl() + "/logout/",
+		// new AsyncHttpResponseHandler() {
+		// @Override
+		// public void onFinish() {
+		// login();
+		// }
+		// });
+
+		login();
 	}
 
 	private void checkLogin() {
@@ -68,15 +71,21 @@ public class MainActivity extends ListActivity {
 		checkLogin();
 		motd();
 
-		@SuppressWarnings("unused")
-		SimpleAdapter adapter = new SimpleAdapter(this, newsFeed,
-				R.layout.assignment_list_row_view, new String[] { "photo",
-						"dateAssigned", "dateDue", "description" }, new int[] {
-						R.id.photo, R.id.dateAssigned, R.id.dateDue,
-						R.id.description });
+		final ListView lv = (ListView) findViewById(android.R.id.list);
+		updateNews();
+		// lv.setAdapter(adapter);
 
-		getNewsJson();
-		// }
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> a, View v, int position,
+					long id) {
+				Object o = lv.getItemAtPosition(position);
+				NewsEntry fullObject = (NewsEntry) o;
+				Toast.makeText(MainActivity.this,
+						"You chose: " + fullObject.getDateDue(),
+						Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
 	private void motd() {
@@ -101,19 +110,7 @@ public class MainActivity extends ListActivity {
 				});
 	}
 
-	private SimpleAdapter initAdapter(
-			ArrayList<HashMap<String, String>> newsFeed) {
-		SimpleAdapter adapter = new SimpleAdapter(this, newsFeed,
-				R.layout.assignment_list_row_view, new String[] { "photo",
-						"dateAssigned", "dateDue", "description" }, new int[] {
-						R.id.photo, R.id.dateAssigned, R.id.dateDue,
-						R.id.description });
-		return adapter;
-	}
-
-	ArrayList<HashMap<String, String>> newsFeed = new ArrayList<HashMap<String, String>>();
-
-	private void getNewsJson() {
+	private void updateNews() {
 		AsyncHttpClient clientSession = new AsyncHttpClient();
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		clientSession.setCookieStore(cookieStore);
@@ -128,24 +125,23 @@ public class MainActivity extends ListActivity {
 							assignments = response.getJSONArray("assignments");
 							JSONObject c = assignments.getJSONObject(0);
 
-							SimpleAdapter adapter = initAdapter(newsFeed);
+							ArrayList<NewsEntry> newsFeed = new ArrayList<NewsEntry>();
+							NewsEntriesAdapter adapter = new NewsEntriesAdapter(
+									MainActivity.this, newsFeed);
 
 							for (int i = 0; i < assignments.length() + 1; i++) {
 
-								JSONObject individualAssignment = new JSONObject(
-										c.getString(Integer.toString(i)));
+								JSONObject a = new JSONObject(c
+										.getString(Integer.toString(i)));
 
-								HashMap<String, String> map = new HashMap<String, String>();
-								map.put("photo",
-										individualAssignment.getString("photo"));
-								map.put("dateAssigned", individualAssignment
+								NewsEntry newsEntry = new NewsEntry();
+								newsEntry.setPhoto(a.getString("photo"));
+								newsEntry.setDateDue(a.getString("date_due"));
+								newsEntry.setDateAssigned(a
 										.getString("date_assigned"));
-								map.put("dateDue", individualAssignment
-										.getString("date_due"));
-								map.put("description", individualAssignment
+								newsEntry.setDescription(a
 										.getString("description"));
-
-								newsFeed.add(map);
+								newsFeed.add(newsEntry);
 
 								if (i == 0) {
 									adapter.notifyDataSetChanged();
@@ -158,6 +154,7 @@ public class MainActivity extends ListActivity {
 						} catch (JSONException e) {
 							e.printStackTrace();
 						}
+
 					}
 
 					@Override
@@ -179,6 +176,7 @@ public class MainActivity extends ListActivity {
 		case R.id.menu_settings:
 			return true;
 		case R.id.logout:
+			System.out.println("logging out");
 			logout();
 			return true;
 

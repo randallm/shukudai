@@ -1,5 +1,7 @@
 package com.randallma.whatsthehomework;
 
+import java.util.ArrayList;
+
 import android.app.Application;
 
 public class ApplicationGlobal extends Application {
@@ -9,7 +11,13 @@ public class ApplicationGlobal extends Application {
 		return wthUrl;
 	}
 
-	// public void setFqdn(String x) {
-	// this.fqdn = x;
-	// }
+	public ArrayList<NewsEntry> newsFeed;
+
+	public ArrayList<NewsEntry> getNewsFeed() {
+		return newsFeed;
+	}
+
+	public void setNewsFeed(ArrayList<NewsEntry> newsFeed) {
+		this.newsFeed = newsFeed;
+	}
 }

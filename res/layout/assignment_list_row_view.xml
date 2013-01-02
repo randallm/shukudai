@@ -1,27 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
+    
+<!-- 	<TextView -->
+<!-- 	    android:id="@+id/dateDue" -->
+<!-- 	    android:layout_width="wrap_content" -->
+<!-- 	    android:layout_height="wrap_content" -->
+<!-- 	    android:layout_alignLeft="@+id/description" -->
+<!-- 	    android:layout_below="@+id/description" -->
+<!-- 	    android:layout_marginTop="16dp" -->
+<!-- 	    android:text="Today at 9:03am" /> -->
 
-	<TextView android:id="@+id/photo"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent" />
+<!-- 	<TextView -->
+<!-- 	    android:id="@+id/dateAssigned" -->
+<!-- 	    android:layout_width="wrap_content" -->
+<!-- 	    android:layout_height="wrap_content" -->
+<!-- 	    android:layout_alignLeft="@+id/description" -->
+<!-- 	    android:layout_below="@+id/photo" -->
+<!-- 	    android:layout_marginTop="16dp" -->
+<!-- 	    android:text="DUE: Saturday, December 4th" /> -->
 	
-	<TextView android:id="@+id/dateAssigned"
-	    android:layout_width="wrap_content"
-	    android:layout_height="fill_parent"
-	    android:layout_below="@id/photo" />
-	
-	<TextView android:id="@+id/dateDue"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@id/dateAssigned" />
+<!-- 	<RelativeLayout -->
+<!-- 	    android:layout_width="match_parent" -->
+<!-- 	    android:layout_height="match_parent" > -->
 
-	<TextView android:id="@+id/description"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@id/dateDue" />
+<!-- 	    <ImageView -->
+<!-- 	    	android:id="@+id/photo" -->
+<!-- 	   		android:layout_width="48dp" -->
+<!-- 	    	android:layout_height="48dp" /> -->
+	    
+<!-- 		<TextView -->
+<!-- 		    android:id="@+id/description" -->
+<!-- 		    android:layout_width="wrap_content" -->
+<!-- 		    android:layout_height="wrap_content" -->
+<!-- 		    android:layout_below="@+id/photo" -->
+<!-- 		    android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s, when an unkn..." /> -->
+		    	    
+	    
+<!-- 	</RelativeLayout> -->
 	
-</RelativeLayout>
+	<TextView
+	    android:id="@+id/photo"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" />
+
+	<TextView
+	    android:id="@+id/dateDue"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" />
+	
+	<TextView
+	    android:id="@+id/dateAssigned"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" />
+	
+	<TextView
+	    android:id="@+id/description"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" />
+</LinearLayout>
