@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -95,6 +97,37 @@ public class MainActivity extends ListActivity {
 			}
 		});
 
+		lv.setOnScrollListener(new OnScrollListener() {
+			private final int visibleThreshold = 5;
+			private int currentPage = 0;
+			private int previousTotal = 0;
+			private boolean loading = true;
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				if (loading) {
+					if (totalItemCount > previousTotal) {
+						loading = false;
+						previousTotal = totalItemCount;
+						currentPage++;
+					}
+				}
+				if (!loading
+						&& (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+					oldSetNews();
+					loading = true;
+				}
+			}
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				System.out.println("state changed");
+
+			}
+
+		});
+
 	}
 
 	private void motd() {
@@ -173,7 +206,7 @@ public class MainActivity extends ListActivity {
 				});
 	}
 
-	public void newSetNews() {
+	private void newSetNews() {
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 
 		ListView lv = g.getLv();
@@ -245,14 +278,16 @@ public class MainActivity extends ListActivity {
 				});
 	}
 
-	// untested
-	public void oldSetNews() {
+	private void oldSetNews() {
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 
+		ArrayList<NewsEntry> newsFeed = g.getNewsFeed();
+
 		ListView lv = g.getLv();
-		Object o = lv.getItemAtPosition(-1);
+		Object o = lv.getItemAtPosition(newsFeed.size() - 1);
 		NewsEntry fullObject = (NewsEntry) o;
 		String oldestPost = Integer.toString(fullObject.getPk());
+		System.out.println(fullObject.getPk());
 
 		AsyncHttpClient clientSession = new AsyncHttpClient();
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
