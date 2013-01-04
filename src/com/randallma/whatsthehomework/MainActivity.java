@@ -79,8 +79,9 @@ public class MainActivity extends ListActivity {
 		g.setAdapter(adapter);
 
 		final ListView lv = (ListView) findViewById(android.R.id.list);
+		g.setLv(lv);
 
-		getNews();
+		initialSetNews();
 
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -89,8 +90,8 @@ public class MainActivity extends ListActivity {
 				Object o = lv.getItemAtPosition(position);
 				NewsEntry fullObject = (NewsEntry) o;
 				Toast.makeText(MainActivity.this,
-						"You chose: " + fullObject.getDateDue(),
-						Toast.LENGTH_SHORT).show();
+						"You chose: " + fullObject.getPk(), Toast.LENGTH_SHORT)
+						.show();
 			}
 		});
 
@@ -118,13 +119,13 @@ public class MainActivity extends ListActivity {
 				});
 	}
 
-	private void getNews() {
+	private void initialSetNews() {
 		AsyncHttpClient clientSession = new AsyncHttpClient();
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		clientSession.setCookieStore(cookieStore);
 
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		clientSession.get(g.getWthUrl() + "/news/dummy/all/1/",
+		clientSession.get(g.getWthUrl() + "/news/new/all/",
 				new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(JSONObject response) {
@@ -137,12 +138,13 @@ public class MainActivity extends ListActivity {
 							ArrayList<NewsEntry> newsFeed = g.getNewsFeed();
 							NewsEntriesAdapter adapter = g.getAdapter();
 
-							for (int i = 0; i < assignments.length() + 1; i++) {
+							for (int i = 0; i < c.length(); i++) {
 
 								JSONObject a = new JSONObject(c
 										.getString(Integer.toString(i)));
 
 								NewsEntry newsEntry = new NewsEntry();
+								newsEntry.setPk(a.getInt("pk"));
 								newsEntry.setPhoto(a.getString("photo"));
 								newsEntry.setDateDue(a.getString("date_due"));
 								newsEntry.setDateAssigned(a
@@ -171,14 +173,92 @@ public class MainActivity extends ListActivity {
 				});
 	}
 
-	public void refreshNews() {
+	public void newSetNews() {
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+
+		ListView lv = g.getLv();
+		Object o = lv.getItemAtPosition(0);
+		// untested
+		if (o == null) {
+			initialSetNews();
+		}
+		NewsEntry fullObject = (NewsEntry) o;
+		String latestPost = Integer.toString(fullObject.getPk());
 
 		AsyncHttpClient clientSession = new AsyncHttpClient();
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		clientSession.setCookieStore(cookieStore);
 
-		clientSession.get(g.getWthUrl() + "/news/dummy/all/2/",
+		clientSession.get(g.getWthUrl() + "/news/new/all/" + latestPost + "/",
+				new JsonHttpResponseHandler() {
+					@Override
+					public void onSuccess(JSONObject response) {
+						JSONArray assignments = new JSONArray();
+						try {
+							ApplicationGlobal g = (ApplicationGlobal) getApplication();
+							ArrayList<NewsEntry> newsFeed = g.getNewsFeed();
+							NewsEntriesAdapter adapter = g.getAdapter();
+
+							assignments = response.getJSONArray("assignments");
+							JSONObject c = assignments.getJSONObject(0);
+
+							if (c.length() == 0) {
+								Toast.makeText(MainActivity.this,
+										"No new homework!", Toast.LENGTH_SHORT)
+										.show();
+							}
+
+							try {
+								c.getString("15");
+								newsFeed.clear();
+								adapter.notifyDataSetChanged();
+								initialSetNews();
+							} catch (JSONException e) {
+								for (int i = 0; i < c.length(); i++) {
+
+									JSONObject a = new JSONObject(c
+											.getString(Integer.toString(i)));
+
+									NewsEntry newsEntry = new NewsEntry();
+									newsEntry.setPk(a.getInt("pk"));
+									newsEntry.setPhoto(a.getString("photo"));
+									newsEntry.setDateDue(a
+											.getString("date_due"));
+									newsEntry.setDateAssigned(a
+											.getString("date_assigned"));
+									newsEntry.setDescription(a
+											.getString("description"));
+									newsFeed.add(0, newsEntry);
+
+									adapter.notifyDataSetChanged();
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+
+					}
+
+					@Override
+					public void onFailure(Throwable e, String response) {
+					}
+				});
+	}
+
+	// untested
+	public void oldSetNews() {
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+
+		ListView lv = g.getLv();
+		Object o = lv.getItemAtPosition(-1);
+		NewsEntry fullObject = (NewsEntry) o;
+		String oldestPost = Integer.toString(fullObject.getPk());
+
+		AsyncHttpClient clientSession = new AsyncHttpClient();
+		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
+		clientSession.setCookieStore(cookieStore);
+
+		clientSession.get(g.getWthUrl() + "/news/old/all/" + oldestPost + "/",
 				new JsonHttpResponseHandler() {
 					@Override
 					public void onSuccess(JSONObject response) {
@@ -191,19 +271,20 @@ public class MainActivity extends ListActivity {
 							ArrayList<NewsEntry> newsFeed = g.getNewsFeed();
 							NewsEntriesAdapter adapter = g.getAdapter();
 
-							for (int i = 0; i < assignments.length() + 1; i++) {
+							for (int i = 0; i < c.length(); i++) {
 
 								JSONObject a = new JSONObject(c
 										.getString(Integer.toString(i)));
 
 								NewsEntry newsEntry = new NewsEntry();
+								newsEntry.setPk(a.getInt("pk"));
 								newsEntry.setPhoto(a.getString("photo"));
 								newsEntry.setDateDue(a.getString("date_due"));
 								newsEntry.setDateAssigned(a
 										.getString("date_assigned"));
 								newsEntry.setDescription(a
 										.getString("description"));
-								newsFeed.add(0, newsEntry);
+								newsFeed.add(newsEntry);
 
 								adapter.notifyDataSetChanged();
 							}
@@ -218,7 +299,6 @@ public class MainActivity extends ListActivity {
 					public void onFailure(Throwable e, String response) {
 					}
 				});
-
 	}
 
 	@Override
@@ -232,7 +312,7 @@ public class MainActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.refresh_news_feed:
-			refreshNews();
+			newSetNews();
 			return true;
 		case R.id.menu_settings:
 			return true;

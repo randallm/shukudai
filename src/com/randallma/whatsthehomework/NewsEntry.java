@@ -2,10 +2,19 @@ package com.randallma.whatsthehomework;
 
 public class NewsEntry {
 
-	private String photo = "";
-	private String dateAssigned = "";
-	private String dateDue = "";
-	private String description = "";
+	private int pk;
+	private String photo;
+	private String dateAssigned;
+	private String dateDue;
+	private String description;
+
+	public int getPk() {
+		return pk;
+	}
+
+	public void setPk(int pk) {
+		this.pk = pk;
+	}
 
 	public String getPhoto() {
 		return photo;
