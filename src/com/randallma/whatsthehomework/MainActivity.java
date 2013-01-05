@@ -67,23 +67,15 @@ public class MainActivity extends ListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
 		checkLogin();
 		motd();
 
-		ArrayList<NewsEntry> newsFeed = new ArrayList<NewsEntry>();
-		NewsEntriesAdapter adapter = new NewsEntriesAdapter(MainActivity.this,
-				newsFeed);
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		g.setNewsFeed(newsFeed);
-		g.setAdapter(adapter);
-
 		final ListView lv = (ListView) findViewById(android.R.id.list);
-		g.setLv(lv);
-
-		initialSetNews();
 
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -98,7 +90,8 @@ public class MainActivity extends ListActivity {
 		});
 
 		lv.setOnScrollListener(new OnScrollListener() {
-			private final int visibleThreshold = 5;
+			private final int visibleThreshold = 0;
+			@SuppressWarnings("unused")
 			private int currentPage = 0;
 			private int previousTotal = 0;
 			private boolean loading = true;
@@ -122,11 +115,18 @@ public class MainActivity extends ListActivity {
 
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				System.out.println("state changed");
-
 			}
 
 		});
+
+		ArrayList<NewsEntry> newsFeed = new ArrayList<NewsEntry>();
+		NewsEntriesAdapter adapter = new NewsEntriesAdapter(MainActivity.this,
+				newsFeed);
+		lv.setAdapter(adapter);
+		g.setNewsFeed(newsFeed);
+		g.setAdapter(adapter);
+		g.setLv(lv);
+		initialSetNews();
 
 	}
 
@@ -243,9 +243,12 @@ public class MainActivity extends ListActivity {
 
 							try {
 								c.getString("15");
-								newsFeed.clear();
-								adapter.notifyDataSetChanged();
-								initialSetNews();
+								Intent intent = getIntent();
+								overridePendingTransition(0, 0);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+								finish();
+								overridePendingTransition(0, 0);
+								startActivity(intent);
 							} catch (JSONException e) {
 								for (int i = 0; i < c.length(); i++) {
 
@@ -287,7 +290,6 @@ public class MainActivity extends ListActivity {
 		Object o = lv.getItemAtPosition(newsFeed.size() - 1);
 		NewsEntry fullObject = (NewsEntry) o;
 		String oldestPost = Integer.toString(fullObject.getPk());
-		System.out.println(fullObject.getPk());
 
 		AsyncHttpClient clientSession = new AsyncHttpClient();
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);

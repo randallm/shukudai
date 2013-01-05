@@ -41,4 +41,5 @@ public class ApplicationGlobal extends Application {
 	public void setLv(ListView lv) {
 		this.lv = lv;
 	}
+
 }
