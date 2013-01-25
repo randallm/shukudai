@@ -223,87 +223,86 @@ public class MainActivity extends ListActivity {
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 
 		ListView lv = g.getLv();
-		Object o = lv.getItemAtPosition(0);
-		// untested
-		if (o == null) {
-			initialSetNews();
-		}
-		NewsEntry fullObject = (NewsEntry) o;
-		String latestPost = Integer.toString(fullObject.getPk());
+		try {
+			Object o = lv.getItemAtPosition(0);
 
-		AsyncHttpClient clientSession = new AsyncHttpClient();
-		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
-		clientSession.setCookieStore(cookieStore);
+			NewsEntry fullObject = (NewsEntry) o;
+			String latestPost = Integer.toString(fullObject.getPk());
 
-		clientSession.get(g.getWthUrl() + "/news/new/all/" + latestPost + "/",
-				new JsonHttpResponseHandler() {
-					@Override
-					public void onSuccess(JSONObject response) {
-						JSONArray assignments = new JSONArray();
-						try {
-							ApplicationGlobal g = (ApplicationGlobal) getApplication();
-							ArrayList<NewsEntry> newsFeed = g.getNewsFeed();
-							NewsEntriesAdapter adapter = g.getAdapter();
+			AsyncHttpClient clientSession = new AsyncHttpClient();
+			PersistentCookieStore cookieStore = new PersistentCookieStore(this);
+			clientSession.setCookieStore(cookieStore);
 
-							assignments = response.getJSONArray("assignments");
-							JSONObject c = assignments.getJSONObject(0);
+			clientSession.get(g.getWthUrl() + "/news/new/all/" + latestPost
+					+ "/", new JsonHttpResponseHandler() {
+				@Override
+				public void onSuccess(JSONObject response) {
+					JSONArray assignments = new JSONArray();
+					try {
+						ApplicationGlobal g = (ApplicationGlobal) getApplication();
+						ArrayList<NewsEntry> newsFeed = g.getNewsFeed();
+						NewsEntriesAdapter adapter = g.getAdapter();
 
-							if (c.length() == 0) {
-								Toast.makeText(MainActivity.this,
-										"No new homework!", Toast.LENGTH_SHORT)
-										.show();
-							}
+						assignments = response.getJSONArray("assignments");
+						JSONObject c = assignments.getJSONObject(0);
 
-							try {
-								c.getString("15");
-								Intent intent = getIntent();
-								overridePendingTransition(0, 0);
-								intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-								finish();
-								overridePendingTransition(0, 0);
-								startActivity(intent);
-							} catch (JSONException e) {
-								for (int i = 0; i < c.length(); i++) {
-
-									JSONObject a = new JSONObject(c
-											.getString(Integer.toString(i)));
-
-									NewsEntry newsEntry = new NewsEntry();
-									newsEntry.setPk(a.getInt("pk"));
-
-									String encodedThumbnail = a
-											.getString("thumbnail");
-									byte[] decodedThumbnailString = Base64
-											.decode(encodedThumbnail,
-													Base64.DEFAULT);
-									Bitmap decodedThumbnail = BitmapFactory
-											.decodeByteArray(
-													decodedThumbnailString,
-													0,
-													decodedThumbnailString.length);
-									newsEntry.setThumbnail(decodedThumbnail);
-
-									newsEntry.setDateDue(a
-											.getString("date_due"));
-									newsEntry.setDateAssigned(a
-											.getString("date_assigned"));
-									newsEntry.setDescription(a
-											.getString("description"));
-									newsFeed.add(0, newsEntry);
-
-									adapter.notifyDataSetChanged();
-								}
-							}
-						} catch (JSONException e) {
-							e.printStackTrace();
+						if (c.length() == 0) {
+							Toast.makeText(MainActivity.this,
+									"No new homework!", Toast.LENGTH_SHORT)
+									.show();
 						}
 
+						try {
+							c.getString("15");
+							Intent intent = getIntent();
+							overridePendingTransition(0, 0);
+							intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+							finish();
+							overridePendingTransition(0, 0);
+							startActivity(intent);
+						} catch (JSONException e) {
+							for (int i = 0; i < c.length(); i++) {
+
+								JSONObject a = new JSONObject(c
+										.getString(Integer.toString(i)));
+
+								NewsEntry newsEntry = new NewsEntry();
+								newsEntry.setPk(a.getInt("pk"));
+
+								String encodedThumbnail = a
+										.getString("thumbnail");
+								byte[] decodedThumbnailString = Base64.decode(
+										encodedThumbnail, Base64.DEFAULT);
+								Bitmap decodedThumbnail = BitmapFactory
+										.decodeByteArray(
+												decodedThumbnailString, 0,
+												decodedThumbnailString.length);
+								newsEntry.setThumbnail(decodedThumbnail);
+
+								newsEntry.setDateDue(a.getString("date_due"));
+								newsEntry.setDateAssigned(a
+										.getString("date_assigned"));
+								newsEntry.setDescription(a
+										.getString("description"));
+								newsFeed.add(0, newsEntry);
+
+								adapter.notifyDataSetChanged();
+							}
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
 					}
 
-					@Override
-					public void onFailure(Throwable e, String response) {
-					}
-				});
+				}
+
+				@Override
+				public void onFailure(Throwable e, String response) {
+				}
+			});
+
+		} catch (IndexOutOfBoundsException e) {
+			initialSetNews();
+		}
 	}
 
 	private void oldSetNews() {
@@ -311,6 +310,7 @@ public class MainActivity extends ListActivity {
 		ArrayList<NewsEntry> newsFeed = g.getNewsFeed();
 
 		ListView lv = g.getLv();
+
 		Object o = lv.getItemAtPosition(newsFeed.size() - 1);
 		NewsEntry fullObject = (NewsEntry) o;
 		String oldestPost = Integer.toString(fullObject.getPk());
