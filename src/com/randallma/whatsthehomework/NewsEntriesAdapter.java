@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NewsEntriesAdapter extends BaseAdapter {
@@ -42,7 +43,8 @@ public class NewsEntriesAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.assignment_list_row_view,
 					null);
 			holder = new ViewHolder();
-			holder.txtPhoto = (TextView) convertView.findViewById(R.id.photo);
+			holder.txtThumbnail = (ImageView) convertView
+					.findViewById(R.id.thumbnail);
 			holder.txtDateDue = (TextView) convertView
 					.findViewById(R.id.dateDue);
 			holder.txtDateAssigned = (TextView) convertView
@@ -55,7 +57,8 @@ public class NewsEntriesAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		holder.txtPhoto.setText(newsEntriesArrayList.get(position).getPhoto());
+		holder.txtThumbnail.setImageBitmap(newsEntriesArrayList.get(position)
+				.getThumbnail());
 		holder.txtDateDue.setText(newsEntriesArrayList.get(position)
 				.getDateDue());
 		holder.txtDateAssigned.setText(newsEntriesArrayList.get(position)
@@ -67,7 +70,7 @@ public class NewsEntriesAdapter extends BaseAdapter {
 	}
 
 	static class ViewHolder {
-		TextView txtPhoto;
+		ImageView txtThumbnail;
 		TextView txtDateDue;
 		TextView txtDateAssigned;
 		TextView txtDescription;

@@ -1,9 +1,11 @@
 package com.randallma.whatsthehomework;
 
+import android.graphics.Bitmap;
+
 public class NewsEntry {
 
 	private int pk;
-	private String photo;
+	private Bitmap thumbnail;
 	private String dateAssigned;
 	private String dateDue;
 	private String description;
@@ -16,12 +18,12 @@ public class NewsEntry {
 		this.pk = pk;
 	}
 
-	public String getPhoto() {
-		return photo;
+	public Bitmap getThumbnail() {
+		return thumbnail;
 	}
 
-	public void setPhoto(String photo) {
-		this.photo = photo;
+	public void setThumbnail(Bitmap thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 
 	public String getDateAssigned() {

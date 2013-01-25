@@ -8,7 +8,10 @@ import org.json.JSONObject;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -178,7 +181,17 @@ public class MainActivity extends ListActivity {
 
 								NewsEntry newsEntry = new NewsEntry();
 								newsEntry.setPk(a.getInt("pk"));
-								newsEntry.setPhoto(a.getString("photo"));
+
+								String encodedThumbnail = a
+										.getString("thumbnail");
+								byte[] decodedThumbnailString = Base64.decode(
+										encodedThumbnail, Base64.DEFAULT);
+								Bitmap decodedThumbnail = BitmapFactory
+										.decodeByteArray(
+												decodedThumbnailString, 0,
+												decodedThumbnailString.length);
+								newsEntry.setThumbnail(decodedThumbnail);
+
 								newsEntry.setDateDue(a.getString("date_due"));
 								newsEntry.setDateAssigned(a
 										.getString("date_assigned"));
@@ -257,7 +270,19 @@ public class MainActivity extends ListActivity {
 
 									NewsEntry newsEntry = new NewsEntry();
 									newsEntry.setPk(a.getInt("pk"));
-									newsEntry.setPhoto(a.getString("photo"));
+
+									String encodedThumbnail = a
+											.getString("thumbnail");
+									byte[] decodedThumbnailString = Base64
+											.decode(encodedThumbnail,
+													Base64.DEFAULT);
+									Bitmap decodedThumbnail = BitmapFactory
+											.decodeByteArray(
+													decodedThumbnailString,
+													0,
+													decodedThumbnailString.length);
+									newsEntry.setThumbnail(decodedThumbnail);
+
 									newsEntry.setDateDue(a
 											.getString("date_due"));
 									newsEntry.setDateAssigned(a
@@ -283,7 +308,6 @@ public class MainActivity extends ListActivity {
 
 	private void oldSetNews() {
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-
 		ArrayList<NewsEntry> newsFeed = g.getNewsFeed();
 
 		ListView lv = g.getLv();
@@ -315,7 +339,17 @@ public class MainActivity extends ListActivity {
 
 								NewsEntry newsEntry = new NewsEntry();
 								newsEntry.setPk(a.getInt("pk"));
-								newsEntry.setPhoto(a.getString("photo"));
+
+								String encodedThumbnail = a
+										.getString("thumbnail");
+								byte[] decodedThumbnailString = Base64.decode(
+										encodedThumbnail, Base64.DEFAULT);
+								Bitmap decodedThumbnail = BitmapFactory
+										.decodeByteArray(
+												decodedThumbnailString, 0,
+												decodedThumbnailString.length);
+								newsEntry.setThumbnail(decodedThumbnail);
+
 								newsEntry.setDateDue(a.getString("date_due"));
 								newsEntry.setDateAssigned(a
 										.getString("date_assigned"));
