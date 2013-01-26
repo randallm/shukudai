@@ -15,16 +15,17 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name="com.randallma.whatsthehomework.ApplicationGlobal"
         android:allowBackup="true"
         android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" android:name="ApplicationGlobal">
+        android:theme="@style/AppTheme" >
         <activity
             android:name="com.randallma.whatsthehomework.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="nosensor" 
-            android:configChanges="keyboardHidden|orientation|screenSize" >
+            android:screenOrientation="nosensor" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,10 +42,18 @@
         </activity>
         <activity
             android:name="com.randallma.whatsthehomework.LoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_login"
             android:screenOrientation="nosensor"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.randallma.whatsthehomework.NewAssignmentActivity"
+            android:label="@string/title_activity_new_assignment"
+            android:parentActivityName="MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
         </activity>
     </application>
 

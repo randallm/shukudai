@@ -8,5 +8,8 @@
     <string name="title_activity_post_assignment">PostAssignmentActivity</string>
     <string name="menu_log_out">Log out</string>
     <string name="refresh_news_feed">Refresh</string>
+    <string name="post_new_assignment">New Assignment</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_new_assignment">NewAssignmentActivity</string>
 
 </resources>

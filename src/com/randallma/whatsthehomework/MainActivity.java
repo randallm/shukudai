@@ -70,6 +70,7 @@ public class MainActivity extends ListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		setTitle("News Feed");
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 
 		super.onCreate(savedInstanceState);
@@ -385,6 +386,11 @@ public class MainActivity extends ListActivity {
 		case R.id.refresh_news_feed:
 			newSetNews();
 			return true;
+		case R.id.post_new_assignment:
+			Intent postAssignment = new Intent(this,
+					PostAssignmentActivity.class);
+			startActivity(postAssignment);
+			finish();
 		case R.id.menu_settings:
 			return true;
 		case R.id.logout:
