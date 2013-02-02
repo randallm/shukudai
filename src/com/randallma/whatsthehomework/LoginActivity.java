@@ -63,7 +63,7 @@ public class LoginActivity extends Activity {
 		params.put("username", attemptUsername.getText().toString());
 		params.put("password", attemptPassword.getText().toString());
 
-		client.post(g.getWthUrl() + "/login/", params,
+		client.post(g.getWthUrl() + "/user/login/", params,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onStart() {

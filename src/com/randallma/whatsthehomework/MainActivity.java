@@ -59,7 +59,7 @@ public class MainActivity extends ListActivity {
 		clientSession.setCookieStore(cookieStore);
 
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		clientSession.get(g.getWthUrl() + "/verifyloggedin/",
+		clientSession.get(g.getWthUrl() + "/user/verify_logged_in/",
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onFailure(Throwable e, String response) {
@@ -140,7 +140,7 @@ public class MainActivity extends ListActivity {
 		clientSession.setCookieStore(cookieStore);
 
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		clientSession.get(g.getWthUrl() + "/motd/",
+		clientSession.get(g.getWthUrl() + "/user/motd/",
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
