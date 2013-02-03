@@ -183,7 +183,7 @@ public class MainActivity extends ListActivity {
 
 								newsEntry.setDateDue(a.getString("date_due"));
 								newsEntry.setDateAssigned(a
-										.getString("date_assigned"));
+										.getString("date_posted"));
 								newsEntry.setDescription(a
 										.getString("description"));
 								newsFeed.add(newsEntry);
@@ -270,7 +270,7 @@ public class MainActivity extends ListActivity {
 
 								newsEntry.setDateDue(a.getString("date_due"));
 								newsEntry.setDateAssigned(a
-										.getString("date_assigned"));
+										.getString("date_posted"));
 								newsEntry.setDescription(a
 										.getString("description"));
 								newsFeed.add(0, newsEntry);
@@ -341,7 +341,7 @@ public class MainActivity extends ListActivity {
 
 								newsEntry.setDateDue(a.getString("date_due"));
 								newsEntry.setDateAssigned(a
-										.getString("date_assigned"));
+										.getString("date_posted"));
 								newsEntry.setDescription(a
 										.getString("description"));
 								newsFeed.add(newsEntry);
