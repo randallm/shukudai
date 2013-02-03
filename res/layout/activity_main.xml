@@ -4,13 +4,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-   <ListView android:id="@id/android:list"
-       android:layout_width="fill_parent"
-       android:layout_height="fill_parent"></ListView>
-   
-   <TextView android:id="@id/android:empty"
-       android:layout_width="fill_parent"
-       android:layout_height="fill_parent"
-       android:text="No data" />
+    <ListView
+        android:id="@id/android:list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </ListView>
+
+    <RelativeLayout
+        android:id="@id/android:empty"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
 </RelativeLayout>
