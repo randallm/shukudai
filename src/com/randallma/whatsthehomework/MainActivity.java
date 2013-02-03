@@ -181,7 +181,8 @@ public class MainActivity extends ListActivity {
 												decodedThumbnailString.length);
 								newsEntry.setThumbnail(decodedThumbnail);
 
-								newsEntry.setDateDue(a.getString("date_due"));
+								newsEntry.setDateDue("Due: "
+										+ a.getString("date_due"));
 								newsEntry.setDateAssigned(a
 										.getString("date_posted"));
 								newsEntry.setDescription(a
@@ -268,7 +269,8 @@ public class MainActivity extends ListActivity {
 												decodedThumbnailString.length);
 								newsEntry.setThumbnail(decodedThumbnail);
 
-								newsEntry.setDateDue(a.getString("date_due"));
+								newsEntry.setDateDue("Due: " + "Due: "
+										+ a.getString("date_due"));
 								newsEntry.setDateAssigned(a
 										.getString("date_posted"));
 								newsEntry.setDescription(a
@@ -339,7 +341,8 @@ public class MainActivity extends ListActivity {
 												decodedThumbnailString.length);
 								newsEntry.setThumbnail(decodedThumbnail);
 
-								newsEntry.setDateDue(a.getString("date_due"));
+								newsEntry.setDateDue("Due: "
+										+ a.getString("date_due"));
 								newsEntry.setDateAssigned(a
 										.getString("date_posted"));
 								newsEntry.setDescription(a

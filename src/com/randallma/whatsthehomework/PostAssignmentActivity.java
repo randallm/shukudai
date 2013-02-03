@@ -122,7 +122,7 @@ public class PostAssignmentActivity extends Activity {
 
 		// submit assignment code
 
-		LinearLayout postAssignmentButton = (LinearLayout) findViewById(R.id.post_new_assignment);
+		LinearLayout postAssignmentButton = (LinearLayout) findViewById(R.id.postAssignmentButton);
 		postAssignmentButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
