@@ -4,13 +4,8 @@
     android:layout_height="match_parent"
     tools:context=".PostAssignmentActivity" >
 
-    <Spinner
-        android:id="@+id/periodSpinner"
-    	android:layout_height="wrap_content"
-    	android:layout_width="wrap_content"
-    />
-    	<!-- android:prompt="@string/periodSpinner"  -->
-    <Button
+    <!--
+         <Button
         android:id="@+id/take_upload_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,5 +14,154 @@
         android:layout_marginLeft="53dp"
         android:layout_marginTop="191dp"
         android:text="@string/take_upload_photo" />
-    
+    -->
+
+    <TextView
+        android:id="@+id/assignmentDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:drawableBottom="@drawable/section_header"
+        android:paddingLeft="12dp"
+        android:text="Assignment Details"
+        android:textAppearance="?android:attr/listSeparatorTextViewStyle"
+        android:textColor="#31b6e7" />
+
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/assignmentDetails"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="Description"
+        android:lines="5"
+        android:singleLine="false" >
+
+        <requestFocus />
+    </EditText>
+
+    <GridLayout
+        android:id="@+id/gridLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/description"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:columnCount="2"
+        android:rowCount="1" >
+
+        <Button
+            android:id="@+id/dateDueSelector"
+            style="@android:style/Widget.DeviceDefault.Light.Spinner"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:onClick="showDatePickerDialog"
+            android:paddingBottom="0dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="0dp"
+            android:text="Date Due" />
+
+        <ImageButton
+            android:id="@+id/takePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_gravity="left"
+            android:layout_row="0"
+            android:src="@drawable/ic_menu_camera" />
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/gridLayout1"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="16dp"
+        android:drawableBottom="@drawable/section_header"
+        android:paddingLeft="12dp"
+        android:text="Class"
+        android:textAppearance="?android:attr/listSeparatorTextViewStyle"
+        android:textColor="#31b6e7" />
+
+    <Spinner
+        android:id="@+id/periodSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp" />
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <ImageView
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#0000"
+                android:clickable="false"
+                android:src="@drawable/navigation_accept" />
+
+            <TextView
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#0000"
+                android:clickable="false"
+                android:text="Post" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <ImageView
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#0000"
+                android:clickable="false"
+                android:src="@drawable/navigation_cancel" />
+
+            <TextView
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#0000"
+                android:clickable="false"
+                android:text="Cancel" />
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>

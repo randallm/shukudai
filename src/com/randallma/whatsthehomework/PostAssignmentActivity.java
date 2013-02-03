@@ -17,6 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -91,38 +92,45 @@ public class PostAssignmentActivity extends Activity {
 
 		// http://stackoverflow.com/questions/6448856/android-camera-intent-how-to-get-full-sized-photo
 
-		open_camera = (Button) findViewById(R.id.take_upload_photo);
-		open_camera.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent takePictureIntent = new Intent(
-						MediaStore.ACTION_IMAGE_CAPTURE);
-
-				try {
-					// place where to store camera taken picture
-					photo = createTemporaryFile("picture", ".jpg");
-					photo.delete();
-				} catch (Exception e) {
-				}
-				fileUri = Uri.fromFile(photo);
-				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-				startActivityForResult(takePictureIntent, 100); // second int
-																// turns into
-																// resultCode
-
-			}
-		});
+		// open_camera = (Button) findViewById(R.id.take_upload_photo);
+		// open_camera.setOnClickListener(new View.OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// Intent takePictureIntent = new Intent(
+		// MediaStore.ACTION_IMAGE_CAPTURE);
+		//
+		// try {
+		// // place where to store camera taken picture
+		// photo = createTemporaryFile("picture", ".jpg");
+		// photo.delete();
+		// } catch (Exception e) {
+		// }
+		// fileUri = Uri.fromFile(photo);
+		// takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+		// startActivityForResult(takePictureIntent, 100); // second int
+		// // turns into
+		// // resultCode
+		//
+		// }
+		// });
 
 		// spinner code
 
 		Spinner periodSpinner = (Spinner) findViewById(R.id.periodSpinner);
-		String[] periodSpinnerItems = new String[] { "ap wh", "ib romance" };
+		String[] periodSpinnerItems = new String[] { "AP World History",
+				"IB Romance" };
 		ArrayAdapter<String> periodSpinnerAdapter = new ArrayAdapter<String>(
 				this, android.R.layout.simple_spinner_item, periodSpinnerItems);
 		periodSpinnerAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		periodSpinner.setAdapter(periodSpinnerAdapter);
 		System.out.println(periodSpinner.getSelectedItem().toString());
+
+	}
+
+	public void showDatePickerDialog(View v) {
+		DialogFragment newFragment = new DatePickerFragment();
+		newFragment.show(getFragmentManager(), "datePicker");
 	}
 
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
