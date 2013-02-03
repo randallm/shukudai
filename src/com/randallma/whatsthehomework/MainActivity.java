@@ -36,20 +36,8 @@ public class MainActivity extends ListActivity {
 	}
 
 	private void logout() {
-		// AsyncHttpClient clientSession = new AsyncHttpClient();
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
 		cookieStore.clear();
-
-		// unnecessary because session is cleared
-		// ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		// clientSession.get(g.getWthUrl() + "/logout/",
-		// new AsyncHttpResponseHandler() {
-		// @Override
-		// public void onFinish() {
-		// login();
-		// }
-		// });
-
 		login();
 	}
 
@@ -390,7 +378,6 @@ public class MainActivity extends ListActivity {
 			Intent postAssignment = new Intent(this,
 					PostAssignmentActivity.class);
 			startActivity(postAssignment);
-			finish();
 		case R.id.menu_settings:
 			return true;
 		case R.id.logout:
