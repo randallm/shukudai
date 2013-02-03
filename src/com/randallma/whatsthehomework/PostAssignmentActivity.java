@@ -83,6 +83,13 @@ public class PostAssignmentActivity extends Activity {
 	}
 
 	@Override
+	public void onBackPressed() {
+		Intent mainActivityIntent = new Intent(this, MainActivity.class);
+		startActivity(mainActivityIntent);
+		finish();
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setTitle("New Homework Assignment");
