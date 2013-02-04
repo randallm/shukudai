@@ -86,6 +86,24 @@ public class PostAssignmentActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post_assignment);
 
+		// cancel assignment posting code
+
+		LinearLayout cancelAssignmentButton = (LinearLayout) findViewById(R.id.cancelAssignmentButton);
+		cancelAssignmentButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent mainActivityIntent = new Intent(
+						PostAssignmentActivity.this, MainActivity.class);
+				mainActivityIntent
+						.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(mainActivityIntent);
+				finish();
+			}
+		});
+
+		// camera code
+
 		ImageButton open_camera = (ImageButton) findViewById(R.id.takePhoto);
 		open_camera.setOnClickListener(new OnClickListener() {
 			@Override
