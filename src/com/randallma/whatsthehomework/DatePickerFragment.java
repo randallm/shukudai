@@ -32,6 +32,9 @@ public class DatePickerFragment extends DialogFragment implements
 		Activity a = getActivity();
 
 		Button dateDueButton = (Button) a.findViewById(R.id.dateDueSelector);
-		dateDueButton.setText(Integer.toString(year));
+		String sYear = Integer.toString(year).substring(2, 3);
+		String sMonth = Integer.toString(month);
+		String sDay = Integer.toString(day);
+		dateDueButton.setText(sMonth + "/" + sDay + "/" + sYear);
 	}
 }
