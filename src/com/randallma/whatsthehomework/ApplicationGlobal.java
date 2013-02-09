@@ -22,7 +22,7 @@ public class ApplicationGlobal extends Application {
 		this.adapter = adapter;
 	}
 
-	ArrayList<NewsEntry> newsFeed;
+	public ArrayList<NewsEntry> newsFeed;
 
 	public ArrayList<NewsEntry> getNewsFeed() {
 		return newsFeed;
@@ -32,7 +32,7 @@ public class ApplicationGlobal extends Application {
 		this.newsFeed = newsFeed;
 	}
 
-	ListView lv;
+	public ListView lv;
 
 	public ListView getLv() {
 		return lv;
@@ -42,4 +42,23 @@ public class ApplicationGlobal extends Application {
 		this.lv = lv;
 	}
 
+	public int[] schoolClassIds;
+
+	public int[] getSchoolClassIds() {
+		return schoolClassIds;
+	}
+
+	public void setSchoolClassIds(int[] schoolClassIds) {
+		this.schoolClassIds = schoolClassIds;
+	}
+
+	public String[] schoolClassTitles;
+
+	public String[] getSchoolClassTitles() {
+		return schoolClassTitles;
+	}
+
+	public void setSchoolClassTitles(String[] schoolClassTitles) {
+		this.schoolClassTitles = schoolClassTitles;
+	}
 }

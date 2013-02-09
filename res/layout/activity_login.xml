@@ -28,7 +28,6 @@
             android:fontFamily="sans-serif-light"
             android:text="@string/login_progress_signing_in"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
     </LinearLayout>
 
     <!-- Login form -->
@@ -77,9 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center_vertical|right" />
-
         </LinearLayout>
-        
     </ScrollView>
 
 </merge>

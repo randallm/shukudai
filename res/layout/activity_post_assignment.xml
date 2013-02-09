@@ -29,25 +29,55 @@
         android:layout_marginRight="12dp"
         android:ems="10"
         android:gravity="top"
-        android:hint="Description"
+        android:hint="Description (Optional)"
         android:lines="5"
         android:singleLine="false" />
+
+    <LinearLayout
+        android:id="@+id/dateInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp" >
+
+        <TextView
+            android:id="@+id/todayInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/date_info_border"
+            android:padding="16dp"
+            android:text="Today&apos;s Date" />
+
+        <TextView
+            android:id="@+id/tomorrowInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/date_info_border"
+            android:padding="16dp"
+            android:text="Tomorrow&apos;s Date" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/description2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/description"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp" >
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/dateInfo"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp" >
 
         <Button
-            android:id="@+id/dateDueSelector"
+            android:id="@+id/dateDue"
             style="@android:style/Widget.DeviceDefault.Light.Spinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_row="0"
             android:layout_weight="1"
             android:onClick="showDatePickerDialog"
             android:paddingBottom="0dp"
@@ -59,9 +89,7 @@
             android:id="@+id/takePhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="1"
-            android:layout_gravity="left"
-            android:layout_row="0"
+            android:contentDescription="Take Photo"
             android:src="@drawable/ic_menu_camera" />
     </LinearLayout>
 
@@ -70,9 +98,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/description2"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:drawableBottom="@drawable/section_header"
         android:paddingLeft="12dp"
         android:text="Class Details"
@@ -84,10 +112,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/classDetails"
-        android:layout_margin="12dp"
-        android:layout_weight="1" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp" />
 
     <LinearLayout
+        android:id="@+id/linearLayout1"
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

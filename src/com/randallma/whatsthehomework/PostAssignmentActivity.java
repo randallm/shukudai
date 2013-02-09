@@ -2,6 +2,7 @@ package com.randallma.whatsthehomework;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -12,15 +13,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -30,7 +36,7 @@ import com.loopj.android.http.RequestParams;
 
 public class PostAssignmentActivity extends Activity {
 
-	protected HomeworkAssignment homeworkAssignment = new HomeworkAssignment();
+	public HomeworkAssignment homeworkAssignment = new HomeworkAssignment();
 
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	Uri fileUri;
@@ -78,13 +84,32 @@ public class PostAssignmentActivity extends Activity {
 		return File.createTempFile(name, extension, tempDir);
 	}
 
+	private void populateDateBoxes() {
+		Calendar c = Calendar.getInstance();
+
+		TextView todayInfo = (TextView) findViewById(R.id.todayInfo);
+		String month = Integer.toString(c.get(Calendar.MONTH));
+		String day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+		String year = Integer.toString(c.get(Calendar.YEAR)).substring(2, 4);
+		todayInfo.setText(Html.fromHtml("Date Today:<br>" + month + "/" + day
+				+ "/" + year));
+
+		TextView tomorrowInfo = (TextView) findViewById(R.id.tomorrowInfo);
+		c.add(Calendar.DAY_OF_YEAR, 7);
+		month = Integer.toString(c.get(Calendar.MONTH));
+		day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+		year = Integer.toString(c.get(Calendar.YEAR)).substring(2, 4);
+		tomorrowInfo.setText(Html.fromHtml("Date Next Week:<br>" + month + "/"
+				+ day + "/" + year));
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		setTitle("New Homework Assignment");
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post_assignment);
+		populateDateBoxes();
 
 		// cancel assignment posting code
 
@@ -126,17 +151,30 @@ public class PostAssignmentActivity extends Activity {
 
 		Spinner periodSpinner = (Spinner) findViewById(R.id.periodSpinner);
 
-		int[] periodSpinnerIds = new int[] { 12, 24 };
-		String[] periodSpinnerItems = new String[] { "AP World History",
-				"IB Romance" };
+		int[] periodSpinnerIds = new int[] { 1 };
+		g.setSchoolClassIds(periodSpinnerIds);
+		String[] periodSpinnerItems = new String[] { "Crumpets 2013-2014 AP Tastiness" };
+		g.setSchoolClassTitles(periodSpinnerItems);
+
 		ArrayAdapter<String> periodSpinnerAdapter = new ArrayAdapter<String>(
 				this, android.R.layout.simple_spinner_item, periodSpinnerItems);
 		periodSpinnerAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		periodSpinner.setAdapter(periodSpinnerAdapter);
-		int periodSpinnerIdPos = periodSpinner.getSelectedItemPosition();
 
-		homeworkAssignment.setSchoolClass(periodSpinnerIds[periodSpinnerIdPos]);
+		periodSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				ApplicationGlobal g = (ApplicationGlobal) getApplication();
+				int[] schoolClassIds = g.getSchoolClassIds();
+				homeworkAssignment.setSchoolClass(schoolClassIds[position]);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
+		});
 
 		// submit assignment code
 
@@ -151,11 +189,11 @@ public class PostAssignmentActivity extends Activity {
 	}
 
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		newFragment.show(getFragmentManager(), "datePicker");
+		DialogFragment datePickerFragment = new DatePickerFragment();
+		datePickerFragment.show(getFragmentManager(), "datePicker");
 	}
 
-	protected void postAssignment() {
+	private boolean postAssignment() {
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 
 		AsyncHttpClient clientSession = new AsyncHttpClient();
@@ -163,32 +201,51 @@ public class PostAssignmentActivity extends Activity {
 		clientSession.setCookieStore(cookieStore);
 
 		RequestParams params = new RequestParams();
+
 		params.put("class_id",
 				Integer.toString(homeworkAssignment.getSchoolClass()));
-		params.put("photo", homeworkAssignment.getPhoto());
-		params.put("description", homeworkAssignment.getDescription());
+
+		if (homeworkAssignment.getDescription() != null) {
+			params.put("description", homeworkAssignment.getDescription());
+		} else {
+			params.put("description", "");
+		}
+
+		if (homeworkAssignment.getPhoto() != null) {
+			params.put("b64_photo", homeworkAssignment.getPhoto());
+		} else {
+			params.put("b64_photo", "");
+		}
+
+		final Button dateDue = (Button) findViewById(R.id.dateDue);
+		if (dateDue.getText().toString().equals("Date Due")) {
+			Toast.makeText(this, "Error: Due Date Unselected",
+					Toast.LENGTH_LONG).show();
+			return false;
+		} else {
+			params.put("date_due", dateDue.getText().toString());
+		}
 
 		clientSession.post(g.getWthUrl() + "/hw/new_assignment/", params,
 				new AsyncHttpResponseHandler() {
-					@Override
-					public void onStart() {
-					}
-
 					@Override
 					public void onSuccess(String response) {
 						System.out.println(response);
 
 						Toast.makeText(PostAssignmentActivity.this,
-								"Homework successfully posted",
-								Toast.LENGTH_SHORT).show();
+								"Assignment Posted", Toast.LENGTH_SHORT).show();
 						finish();
 					}
 
 					@Override
 					public void onFailure(Throwable e, String response) {
-						System.out.println(response);
+						if (response != null) {
+							System.out.println(response);
+						}
 					}
 				});
+
+		return true;
 	}
 
 	@Override

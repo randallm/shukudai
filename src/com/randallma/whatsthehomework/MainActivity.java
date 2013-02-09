@@ -63,7 +63,6 @@ public class MainActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		setTitle("News Feed");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		motd();
@@ -160,8 +159,7 @@ public class MainActivity extends ListActivity {
 						decodedThumbnailString.length);
 				newsEntry.setThumbnail(decodedThumbnail);
 
-				newsEntry.setDateDue("Due: " + "Due: "
-						+ a.getString("date_due"));
+				newsEntry.setDateDue("Due: " + a.getString("date_due"));
 				newsEntry.setDateAssigned(a.getString("date_posted"));
 				newsEntry.setDescription(a.getString("description"));
 

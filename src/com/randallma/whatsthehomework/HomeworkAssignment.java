@@ -4,7 +4,6 @@ public class HomeworkAssignment {
 
 	private int schoolClass;
 	private String photo;
-	private int dateDue;
 	private String description;
 
 	public int getSchoolClass() {
@@ -13,10 +12,6 @@ public class HomeworkAssignment {
 
 	public String getPhoto() {
 		return photo;
-	}
-
-	public int getDateDue() {
-		return dateDue;
 	}
 
 	public String getDescription() {
@@ -29,10 +24,6 @@ public class HomeworkAssignment {
 
 	public void setPhoto(String photo) {
 		this.photo = photo;
-	}
-
-	public void setDateDue(int dateDue) {
-		this.dateDue = dateDue;
 	}
 
 	public void setDescription(String description) {

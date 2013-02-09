@@ -16,8 +16,6 @@ public class DatePickerFragment extends DialogFragment implements
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		// User the current date as the default date in the picker
-
 		final Calendar c = Calendar.getInstance();
 		int year = c.get(Calendar.YEAR);
 		int month = c.get(Calendar.MONTH);
@@ -28,12 +26,11 @@ public class DatePickerFragment extends DialogFragment implements
 
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
-		// Do something with the date chosen by the user
 		Activity a = getActivity();
 
-		Button dateDueButton = (Button) a.findViewById(R.id.dateDueSelector);
-		String sYear = Integer.toString(year).substring(2, 3);
-		String sMonth = Integer.toString(month);
+		Button dateDueButton = (Button) a.findViewById(R.id.dateDue);
+		String sYear = Integer.toString(year).substring(2, 4);
+		String sMonth = Integer.toString(month + 1);
 		String sDay = Integer.toString(day);
 		dateDueButton.setText(sMonth + "/" + sDay + "/" + sYear);
 	}
