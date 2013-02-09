@@ -30,42 +30,22 @@ import com.loopj.android.http.PersistentCookieStore;
 public class MainActivity extends ListActivity {
 
 	private void login() {
+		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
+		cookieStore.clear();
+
 		Intent loginActivityIntent = new Intent(this, LoginActivity.class);
 		startActivity(loginActivityIntent);
 		finish();
 	}
 
-	private void logout() {
-		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
-		cookieStore.clear();
-		login();
-	}
-
-	private void checkLogin() {
-		AsyncHttpClient clientSession = new AsyncHttpClient();
-		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
-		clientSession.setCookieStore(cookieStore);
-
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		clientSession.get(g.getWthUrl() + "/user/verify_logged_in/",
-				new AsyncHttpResponseHandler() {
-					@Override
-					public void onFailure(Throwable e, String response) {
-						login();
-					}
-				});
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTitle("News Feed");
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		checkLogin();
 		motd();
+
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 
 		final ListView lv = (ListView) findViewById(android.R.id.list);
 
@@ -119,7 +99,6 @@ public class MainActivity extends ListActivity {
 		g.setAdapter(adapter);
 		g.setLv(lv);
 		initialSetNews();
-
 	}
 
 	private void motd() {
@@ -384,8 +363,7 @@ public class MainActivity extends ListActivity {
 		case R.id.menu_settings:
 			return true;
 		case R.id.logout:
-			System.out.println("logging out");
-			logout();
+			login();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
