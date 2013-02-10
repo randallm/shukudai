@@ -205,6 +205,12 @@ public class PostAssignmentActivity extends Activity {
 		params.put("class_id",
 				Integer.toString(homeworkAssignment.getSchoolClass()));
 
+		if ((homeworkAssignment.getDescription() == null)
+				&& (homeworkAssignment.getPhoto() == null)) {
+			Toast.makeText(PostAssignmentActivity.this,
+					"Error: Need Description or Photo", Toast.LENGTH_SHORT);
+		}
+
 		if (homeworkAssignment.getDescription() != null) {
 			params.put("description", homeworkAssignment.getDescription());
 		} else {
@@ -230,8 +236,6 @@ public class PostAssignmentActivity extends Activity {
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response) {
-						System.out.println(response);
-
 						Toast.makeText(PostAssignmentActivity.this,
 								"Assignment Posted", Toast.LENGTH_SHORT).show();
 						finish();
@@ -240,7 +244,8 @@ public class PostAssignmentActivity extends Activity {
 					@Override
 					public void onFailure(Throwable e, String response) {
 						if (response != null) {
-							System.out.println(response);
+							Toast.makeText(PostAssignmentActivity.this,
+									response, Toast.LENGTH_SHORT).show();
 						}
 					}
 				});
