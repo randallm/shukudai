@@ -3,6 +3,11 @@ What's the Homework
 
 What's the Homework (WTH) is an Android collaborative homework manager app. Students can share and upload homework assignments and view them in Facebook-esque news feeds.
 
+Screenshots
+-----------
+
+![News Feed](http://i.imgur.com/pKNgnDb.png) ![Posting a new assignment...](http://i.imgur.com/uMbEhvd.png)
+
 
 Licensing
 ---------
