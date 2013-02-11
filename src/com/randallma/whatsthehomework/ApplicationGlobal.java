@@ -42,23 +42,23 @@ public class ApplicationGlobal extends Application {
 		this.lv = lv;
 	}
 
-	public int[] schoolClassIds;
+	public ArrayList<Integer> schoolClassIds;
 
-	public int[] getSchoolClassIds() {
+	public ArrayList<Integer> getSchoolClassIds() {
 		return schoolClassIds;
 	}
 
-	public void setSchoolClassIds(int[] schoolClassIds) {
+	public void setSchoolClassIds(ArrayList<Integer> schoolClassIds) {
 		this.schoolClassIds = schoolClassIds;
 	}
 
-	public String[] schoolClassTitles;
+	public ArrayList<String> schoolClassItems;
 
-	public String[] getSchoolClassTitles() {
-		return schoolClassTitles;
+	public ArrayList<String> getSchoolClassItems() {
+		return schoolClassItems;
 	}
 
-	public void setSchoolClassTitles(String[] schoolClassTitles) {
-		this.schoolClassTitles = schoolClassTitles;
+	public void setSchoolClassItems(ArrayList<String> schoolClassItems) {
+		this.schoolClassItems = schoolClassItems;
 	}
 }

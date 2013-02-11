@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +21,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -67,6 +70,58 @@ public class MainActivity extends ListActivity {
 		setContentView(R.layout.activity_main);
 		motd();
 
+		setClassList();
+		ArrayList<Integer> schoolClassIds = new ArrayList<Integer>(
+				g.getSchoolClassIds());
+		schoolClassIds.add(0, -1);
+		ArrayList<String> schoolClassItems = new ArrayList<String>(
+				g.getSchoolClassItems());
+		schoolClassItems.add(0, "News Feed");
+
+		ArrayAdapter<String> classSpinnerAdapter = new ArrayAdapter<String>(
+				this, R.layout.dark_action_bar_spinner_dropdown_item,
+				schoolClassItems);
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		ActionBar.OnNavigationListener navigationListener = new OnNavigationListener() {
+			@Override
+			public boolean onNavigationItemSelected(int itemPosition,
+					long itemId) {
+				ApplicationGlobal g = (ApplicationGlobal) getApplication();
+
+				ArrayList<Integer> schoolClassIds = new ArrayList<Integer>(
+						g.getSchoolClassIds());
+				schoolClassIds.add(0, -1);
+				ArrayList<String> schoolClassItems = new ArrayList<String>(
+						g.getSchoolClassItems());
+				schoolClassItems.add(0, "News Feed");
+
+				Toast.makeText(MainActivity.this,
+						schoolClassItems.get(itemPosition), Toast.LENGTH_SHORT)
+						.show();
+
+				if (schoolClassIds.get(itemPosition) == -1) {
+					initNewsFeed();
+				}
+				return false;
+			}
+		};
+
+		getActionBar().setListNavigationCallbacks(classSpinnerAdapter,
+				navigationListener);
+	}
+
+	private void setClassList() {
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+
+		ArrayList<Integer> schoolClassIds = new ArrayList<Integer>();
+		schoolClassIds.add(1);
+		g.setSchoolClassIds(schoolClassIds);
+		ArrayList<String> schoolClassItems = new ArrayList<String>();
+		schoolClassItems.add("Crumpets 2013-2014 AP Tastiness");
+		g.setSchoolClassItems(schoolClassItems);
+	}
+
+	private void initNewsFeed() {
 		final ListView lv = (ListView) findViewById(android.R.id.list);
 
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -113,10 +168,10 @@ public class MainActivity extends ListActivity {
 		NewsEntriesAdapter adapter = new NewsEntriesAdapter(MainActivity.this,
 				newsFeed);
 		lv.setAdapter(adapter);
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 		g.setNewsFeed(newsFeed);
 		g.setAdapter(adapter);
 		g.setLv(lv);
-
 		setNews("initial");
 	}
 

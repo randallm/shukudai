@@ -2,6 +2,7 @@ package com.randallma.whatsthehomework;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -56,7 +57,7 @@ public class PostAssignmentActivity extends Activity {
 					// 2048x2048)
 
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+					bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
 					byte[] input = baos.toByteArray();
 					String encoded = Base64.encodeToString(input,
 							Base64.DEFAULT);
@@ -151,10 +152,7 @@ public class PostAssignmentActivity extends Activity {
 
 		Spinner periodSpinner = (Spinner) findViewById(R.id.periodSpinner);
 
-		int[] periodSpinnerIds = new int[] { 1 };
-		g.setSchoolClassIds(periodSpinnerIds);
-		String[] periodSpinnerItems = new String[] { "Crumpets 2013-2014 AP Tastiness" };
-		g.setSchoolClassTitles(periodSpinnerItems);
+		ArrayList<String> periodSpinnerItems = g.getSchoolClassItems();
 
 		ArrayAdapter<String> periodSpinnerAdapter = new ArrayAdapter<String>(
 				this, android.R.layout.simple_spinner_item, periodSpinnerItems);
@@ -167,8 +165,8 @@ public class PostAssignmentActivity extends Activity {
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
 				ApplicationGlobal g = (ApplicationGlobal) getApplication();
-				int[] schoolClassIds = g.getSchoolClassIds();
-				homeworkAssignment.setSchoolClass(schoolClassIds[position]);
+				ArrayList<Integer> schoolClassIds = g.getSchoolClassIds();
+				homeworkAssignment.setSchoolClass(schoolClassIds.get(position));
 			}
 
 			@Override
