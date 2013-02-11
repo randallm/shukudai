@@ -19,13 +19,11 @@ import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +35,8 @@ import com.loopj.android.http.RequestParams;
 
 public class PostAssignmentActivity extends Activity {
 
-	public HomeworkAssignment homeworkAssignment = new HomeworkAssignment();
+	String b64Photo;
+	int schoolClass;
 
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	Uri fileUri;
@@ -62,7 +61,7 @@ public class PostAssignmentActivity extends Activity {
 					String encoded = Base64.encodeToString(input,
 							Base64.DEFAULT);
 
-					homeworkAssignment.setPhoto(encoded);
+					b64Photo = encoded;
 
 				} catch (Exception e) {
 
@@ -71,7 +70,7 @@ public class PostAssignmentActivity extends Activity {
 
 			super.onActivityResult(requestCode, resultCode, data);
 		} else {
-			// catch this scenario
+			// TODO: catch this scenario
 		}
 	}
 
@@ -104,56 +103,41 @@ public class PostAssignmentActivity extends Activity {
 				+ day + "/" + year));
 	}
 
+	public void cancelAssignment(View v) {
+		Intent mainActivityIntent = new Intent(this, MainActivity.class);
+		mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		startActivity(mainActivityIntent);
+		finish();
+	}
+
+	public void takePhotoOfAssignment(View v) {
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+		try {
+			photo = createTemporaryFile("picture", ".jpg");
+			photo.delete();
+		} catch (Exception e) {
+		}
+		fileUri = Uri.fromFile(photo);
+		takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+		startActivityForResult(takePictureIntent, 100);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post_assignment);
+
 		populateDateBoxes();
+		initSchoolClassSpinner();
+	}
 
-		// cancel assignment posting code
-
-		LinearLayout cancelAssignmentButton = (LinearLayout) findViewById(R.id.cancelAssignmentButton);
-		cancelAssignmentButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent mainActivityIntent = new Intent(
-						PostAssignmentActivity.this, MainActivity.class);
-				mainActivityIntent
-						.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				startActivity(mainActivityIntent);
-				finish();
-			}
-		});
-
-		// camera code
-
-		ImageButton open_camera = (ImageButton) findViewById(R.id.takePhoto);
-		open_camera.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent takePictureIntent = new Intent(
-						MediaStore.ACTION_IMAGE_CAPTURE);
-
-				try {
-					photo = createTemporaryFile("picture", ".jpg");
-					photo.delete();
-				} catch (Exception e) {
-				}
-				fileUri = Uri.fromFile(photo);
-				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-				startActivityForResult(takePictureIntent, 100);
-			}
-		});
-
-		// spinner code
+	private void initSchoolClassSpinner() {
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 
 		Spinner periodSpinner = (Spinner) findViewById(R.id.periodSpinner);
-
 		ArrayList<String> periodSpinnerItems = g.getSchoolClassItems();
-
 		ArrayAdapter<String> periodSpinnerAdapter = new ArrayAdapter<String>(
 				this, android.R.layout.simple_spinner_item, periodSpinnerItems);
 		periodSpinnerAdapter
@@ -166,22 +150,11 @@ public class PostAssignmentActivity extends Activity {
 					int position, long id) {
 				ApplicationGlobal g = (ApplicationGlobal) getApplication();
 				ArrayList<Integer> schoolClassIds = g.getSchoolClassIds();
-				homeworkAssignment.setSchoolClass(schoolClassIds.get(position));
+				schoolClass = schoolClassIds.get(position);
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
-			}
-		});
-
-		// submit assignment code
-
-		LinearLayout postAssignmentButton = (LinearLayout) findViewById(R.id.postAssignmentButton);
-		postAssignmentButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				System.out.println("post button clicked");
-				postAssignment();
 			}
 		});
 	}
@@ -191,7 +164,7 @@ public class PostAssignmentActivity extends Activity {
 		datePickerFragment.show(getFragmentManager(), "datePicker");
 	}
 
-	private boolean postAssignment() {
+	public boolean postAssignment(View v) {
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 
 		AsyncHttpClient clientSession = new AsyncHttpClient();
@@ -200,23 +173,24 @@ public class PostAssignmentActivity extends Activity {
 
 		RequestParams params = new RequestParams();
 
-		params.put("class_id",
-				Integer.toString(homeworkAssignment.getSchoolClass()));
+		params.put("class_id", Integer.toString(schoolClass));
 
-		if ((homeworkAssignment.getDescription() == null)
-				&& (homeworkAssignment.getPhoto() == null)) {
+		EditText descriptionEditText = (EditText) findViewById(R.id.description);
+		String description = descriptionEditText.getText().toString();
+
+		if ((description == null) && (b64Photo == null)) {
 			Toast.makeText(PostAssignmentActivity.this,
 					"Error: Need Description or Photo", Toast.LENGTH_SHORT);
 		}
 
-		if (homeworkAssignment.getDescription() != null) {
-			params.put("description", homeworkAssignment.getDescription());
+		if (description != null) {
+			params.put("description", description);
 		} else {
 			params.put("description", "");
 		}
 
-		if (homeworkAssignment.getPhoto() != null) {
-			params.put("b64_photo", homeworkAssignment.getPhoto());
+		if (b64Photo != null) {
+			params.put("b64_photo", b64Photo);
 		} else {
 			params.put("b64_photo", "");
 		}

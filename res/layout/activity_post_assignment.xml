@@ -90,6 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="Take Photo"
+            android:onClick="takePhotoOfAssignment"
             android:src="@drawable/ic_menu_camera" />
     </LinearLayout>
 
@@ -131,6 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="postAssignment"
             android:orientation="horizontal" >
 
             <ImageView
@@ -156,6 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="cancelAssignment"
             android:orientation="horizontal" >
 
             <ImageView
