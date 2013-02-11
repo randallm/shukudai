@@ -24,6 +24,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -167,7 +168,8 @@ public class PostAssignmentActivity extends Activity {
 	}
 
 	public boolean postAssignment(View v) {
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+		LinearLayout postAssignmentButton = (LinearLayout) findViewById(R.id.postAssignmentButton);
+		postAssignmentButton.setClickable(false);
 
 		AsyncHttpClient clientSession = new AsyncHttpClient();
 		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
@@ -183,6 +185,8 @@ public class PostAssignmentActivity extends Activity {
 		if ((description == null) && (b64Photo == null)) {
 			Toast.makeText(PostAssignmentActivity.this,
 					"Error: Need Description or Photo", Toast.LENGTH_SHORT);
+			postAssignmentButton.setClickable(true);
+			return false;
 		}
 
 		if (description != null) {
@@ -201,11 +205,13 @@ public class PostAssignmentActivity extends Activity {
 		if (dateDue.getText().toString().equals("Date Due")) {
 			Toast.makeText(this, "Error: Due Date Unselected",
 					Toast.LENGTH_LONG).show();
+			postAssignmentButton.setClickable(true);
 			return false;
 		} else {
 			params.put("date_due", dateDue.getText().toString());
 		}
 
+		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 		clientSession.post(g.getWthUrl() + "/hw/new_assignment/", params,
 				new AsyncHttpResponseHandler() {
 					@Override
@@ -224,6 +230,8 @@ public class PostAssignmentActivity extends Activity {
 						if (response != null) {
 							Toast.makeText(PostAssignmentActivity.this,
 									response, Toast.LENGTH_SHORT).show();
+							LinearLayout postAssignmentButton = (LinearLayout) findViewById(R.id.postAssignmentButton);
+							postAssignmentButton.setClickable(true);
 						}
 					}
 				});
