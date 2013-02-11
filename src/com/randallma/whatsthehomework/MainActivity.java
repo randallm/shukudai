@@ -70,6 +70,10 @@ public class MainActivity extends ListActivity {
 		setContentView(R.layout.activity_main);
 		motd();
 
+		if (getIntent().getStringExtra(PostAssignmentActivity.COMPLETED_POST) != null) {
+			setNews("new");
+		}
+
 		setClassList();
 		ArrayList<Integer> schoolClassIds = new ArrayList<Integer>(
 				g.getSchoolClassIds());

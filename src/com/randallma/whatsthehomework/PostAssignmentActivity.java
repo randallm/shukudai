@@ -35,6 +35,8 @@ import com.loopj.android.http.RequestParams;
 
 public class PostAssignmentActivity extends Activity {
 
+	public final static String COMPLETED_POST = "com.randallma.whatsthehomework.COMPLETED_POST";
+
 	String b64Photo;
 	int schoolClass;
 
@@ -210,6 +212,10 @@ public class PostAssignmentActivity extends Activity {
 					public void onSuccess(String response) {
 						Toast.makeText(PostAssignmentActivity.this,
 								"Assignment Posted", Toast.LENGTH_SHORT).show();
+						Intent completedPostIntent = new Intent(
+								PostAssignmentActivity.this, MainActivity.class);
+						completedPostIntent.putExtra(COMPLETED_POST, "true");
+						startActivity(completedPostIntent);
 						finish();
 					}
 
