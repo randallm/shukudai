@@ -38,13 +38,6 @@
             android:label="@string/title_activity_post_assignment"
             android:screenOrientation="nosensor" >
         </activity>
-        <activity
-            android:name="com.randallma.whatsthehomework.LoginActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_login"
-            android:screenOrientation="nosensor"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
-        </activity>
     </application>
 
 </manifest>

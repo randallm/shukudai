@@ -1,13 +1,15 @@
 package com.randallma.whatsthehomework;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -15,76 +17,103 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Html;
-import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-
 public class PostAssignmentActivity extends Activity {
 
 	public final static String COMPLETED_POST = "com.randallma.whatsthehomework.COMPLETED_POST";
 
-	String b64Photo;
+	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	private File photo;
+	private Uri photoUri;
+
 	int schoolClass;
 
-	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-	Uri fileUri;
-	File photo;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_post_assignment);
+
+		populateDateBoxes();
+		initSchoolClassSpinner();
+	}
+
+	public void takePhotoOfAssignment(View v) {
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+		try {
+			photo = File.createTempFile("assignment_photo_", ".jpg",
+					getPhotoStorageDir(this, "assignment_photos"));
+			photo.delete();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		photoUri = Uri.fromFile(photo);
+		takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+		startActivityForResult(takePictureIntent,
+				CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+	}
+
+	private File getPhotoStorageDir(Context context, String name) {
+		File file = new File(
+				context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+				name);
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+		return file;
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
-				this.getContentResolver().notifyChange(fileUri, null);
+				// disable "Add" button until image saving process is done
+				LinearLayout postAssignmentButton = (LinearLayout) findViewById(R.id.postAssignmentButton);
+				postAssignmentButton.setClickable(false);
+
+				this.getContentResolver().notifyChange(photoUri, null);
 				ContentResolver cr = this.getContentResolver();
-				Bitmap bitmap;
+
 				try {
-					bitmap = MediaStore.Images.Media.getBitmap(cr, fileUri);
-					// bitmap = Bitmap.createScaledBitmap(bitmap, 400, 400,
-					// true); // resize bitmap to not crash program (max
-					// 2048x2048)
+					Bitmap photoBmp = MediaStore.Images.Media.getBitmap(cr,
+							photoUri);
 
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-					byte[] input = baos.toByteArray();
-					String encoded = Base64.encodeToString(input,
-							Base64.DEFAULT);
+					FileOutputStream fileOut = new FileOutputStream(photo);
+					photoBmp.compress(Bitmap.CompressFormat.JPEG, 100, fileOut);
+					fileOut.flush();
+					fileOut.close();
 
-					b64Photo = encoded;
+					postAssignmentButton.setClickable(true);
 
+					System.out.println(photo.getAbsolutePath());
+					System.out.println(photoUri);
 				} catch (Exception e) {
-
+					e.printStackTrace();
 				}
+			} else {
+				photo = null;
+				photoUri = null;
 			}
 
 			super.onActivityResult(requestCode, resultCode, data);
 		} else {
-			// TODO: catch this scenario
+			Log.e(PostAssignmentActivity.class.getName(),
+					"Camera capture failed");
 		}
-	}
-
-	private File createTemporaryFile(String name, String extension)
-			throws Exception {
-		File tempDir = Environment.getExternalStorageDirectory();
-		tempDir = new File(tempDir.getAbsolutePath() + "/.temp/");
-		if (!tempDir.exists()) {
-			tempDir.mkdir();
-		}
-		return File.createTempFile(name, extension, tempDir);
 	}
 
 	private void populateDateBoxes() {
@@ -104,36 +133,6 @@ public class PostAssignmentActivity extends Activity {
 		year = Integer.toString(c.get(Calendar.YEAR)).substring(2, 4);
 		tomorrowInfo.setText(Html.fromHtml("Date Next Week:<br>" + month + "/"
 				+ day + "/" + year));
-	}
-
-	public void cancelAssignment(View v) {
-		Intent mainActivityIntent = new Intent(this, MainActivity.class);
-		mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		startActivity(mainActivityIntent);
-		finish();
-	}
-
-	public void takePhotoOfAssignment(View v) {
-		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-		try {
-			photo = createTemporaryFile("picture", ".jpg");
-			photo.delete();
-		} catch (Exception e) {
-		}
-		fileUri = Uri.fromFile(photo);
-		takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-		startActivityForResult(takePictureIntent, 100);
-	}
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_post_assignment);
-
-		populateDateBoxes();
-		initSchoolClassSpinner();
 	}
 
 	private void initSchoolClassSpinner() {
@@ -168,80 +167,42 @@ public class PostAssignmentActivity extends Activity {
 	}
 
 	public boolean postAssignment(View v) {
-		LinearLayout postAssignmentButton = (LinearLayout) findViewById(R.id.postAssignmentButton);
-		postAssignmentButton.setClickable(false);
-
-		AsyncHttpClient clientSession = new AsyncHttpClient();
-		PersistentCookieStore cookieStore = new PersistentCookieStore(this);
-		clientSession.setCookieStore(cookieStore);
-
-		RequestParams params = new RequestParams();
-
-		params.put("class_id", Integer.toString(schoolClass));
-
-		EditText descriptionEditText = (EditText) findViewById(R.id.description);
-		String description = descriptionEditText.getText().toString();
-
-		if ((description == null) && (b64Photo == null)) {
-			Toast.makeText(PostAssignmentActivity.this,
-					"Error: Need Description or Photo", Toast.LENGTH_SHORT);
-			postAssignmentButton.setClickable(true);
-			return false;
-		}
-
-		if (description != null) {
-			params.put("description", description);
+		Assignment assignment = new Assignment();
+		assignment.setId(schoolClass);
+		assignment.setDescription(((EditText) findViewById(R.id.description))
+				.getText().toString());
+		assignment.setDateDue("Date Due Placeholder");
+		assignment.setDateAssigned("Date Assigned Placeholder");
+		if (photoUri != null) {
+			assignment.setImageUri(photoUri.toString());
 		} else {
-			params.put("description", "");
+			assignment.setImageUri(null);
 		}
 
-		if (b64Photo != null) {
-			params.put("b64_photo", b64Photo);
-		} else {
-			params.put("b64_photo", "");
-		}
+		AssignmentsDataSource dao = new AssignmentsDataSource(this);
+		dao.open();
+		dao.createAssignment(assignment);
+		dao.close();
 
-		final Button dateDue = (Button) findViewById(R.id.dateDue);
-		if (dateDue.getText().toString().equals("Date Due")) {
-			Toast.makeText(this, "Error: Due Date Unselected",
-					Toast.LENGTH_LONG).show();
-			postAssignmentButton.setClickable(true);
-			return false;
-		} else {
-			params.put("date_due", dateDue.getText().toString());
-		}
+		Toast.makeText(this, "Assignment Added", Toast.LENGTH_SHORT).show();
+		Intent completedPostIntent = new Intent(this, MainActivity.class);
 
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
-		clientSession.post(g.getWthUrl() + "/hw/new_assignment/", params,
-				new AsyncHttpResponseHandler() {
-					@Override
-					public void onSuccess(String response) {
-						Toast.makeText(PostAssignmentActivity.this,
-								"Assignment Posted", Toast.LENGTH_SHORT).show();
-						Intent completedPostIntent = new Intent(
-								PostAssignmentActivity.this, MainActivity.class);
-						completedPostIntent.putExtra(COMPLETED_POST, "true");
-						startActivity(completedPostIntent);
-						finish();
-					}
-
-					@Override
-					public void onFailure(Throwable e, String response) {
-						if (response != null) {
-							Toast.makeText(PostAssignmentActivity.this,
-									response, Toast.LENGTH_SHORT).show();
-							LinearLayout postAssignmentButton = (LinearLayout) findViewById(R.id.postAssignmentButton);
-							postAssignmentButton.setClickable(true);
-						}
-					}
-				});
+		completedPostIntent.putExtra(COMPLETED_POST, "true");
+		startActivity(completedPostIntent);
+		finish();
 
 		return true;
 	}
 
+	public void cancelAssignment(View v) {
+		Intent mainActivityIntent = new Intent(this, MainActivity.class);
+		mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		startActivity(mainActivityIntent);
+		finish();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_post_assignment, menu);
 		return true;
 	}
@@ -250,11 +211,7 @@ public class PostAssignmentActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			Intent parentActivityIntent = new Intent(this, MainActivity.class);
-			parentActivityIntent
-					.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			startActivity(parentActivityIntent);
-			finish();
+			cancelAssignment(null);
 			return true;
 		}
 
@@ -263,9 +220,6 @@ public class PostAssignmentActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		Intent mainActivityIntent = new Intent(this, MainActivity.class);
-		mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		startActivity(mainActivityIntent);
-		finish();
+		cancelAssignment(null);
 	}
 }

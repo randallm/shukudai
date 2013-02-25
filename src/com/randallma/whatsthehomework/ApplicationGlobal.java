@@ -3,7 +3,6 @@ package com.randallma.whatsthehomework;
 import java.util.ArrayList;
 
 import android.app.Application;
-import android.widget.ListView;
 
 public class ApplicationGlobal extends Application {
 	public String wthUrl = "http://192.168.1.42:5000";
@@ -12,34 +11,14 @@ public class ApplicationGlobal extends Application {
 		return wthUrl;
 	}
 
-	public NewsEntriesAdapter adapter;
+	public AssignmentAdapter assignmentAdapter;
 
-	public NewsEntriesAdapter getAdapter() {
-		return adapter;
+	public AssignmentAdapter getAssignmentAdapter() {
+		return assignmentAdapter;
 	}
 
-	public void setAdapter(NewsEntriesAdapter adapter) {
-		this.adapter = adapter;
-	}
-
-	public ArrayList<NewsEntry> newsFeed;
-
-	public ArrayList<NewsEntry> getNewsFeed() {
-		return newsFeed;
-	}
-
-	public void setNewsFeed(ArrayList<NewsEntry> newsFeed) {
-		this.newsFeed = newsFeed;
-	}
-
-	public ListView lv;
-
-	public ListView getLv() {
-		return lv;
-	}
-
-	public void setLv(ListView lv) {
-		this.lv = lv;
+	public void setAssignmentAdapter(AssignmentAdapter assignmentAdapter) {
+		this.assignmentAdapter = assignmentAdapter;
 	}
 
 	public ArrayList<Integer> schoolClassIds;
