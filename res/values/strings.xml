@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="title_activity_main">News Feed</string>
+    <string name="title_activity_main">All Assignments</string>
     <string name="app_name">What\'s the Homework?</string>
     <string name="menu_settings">Settings</string>
     <string name="take_upload_photo">Take and Upload Photo</string>
@@ -9,6 +9,8 @@
     <string name="menu_log_out">Log out</string>
     <string name="refresh_news_feed">Refresh</string>
     <string name="post_new_assignment">New Assignment</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="description_examples">Examples:\n\t→p.101: 1&#8211;3, 7&#8211;21 odd\n\t→Read up on preterite tense before trying this worksheet</string>
+    <string name="assignment_details">Assignment Details</string>
+    <string name="description">Description</string>
 
 </resources>

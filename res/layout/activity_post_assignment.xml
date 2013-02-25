@@ -5,7 +5,7 @@
     tools:context=".PostAssignmentActivity" >
 
     <TextView
-        android:id="@+id/assignmentDetails"
+        android:id="@+id/headerAssignmentDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -15,7 +15,32 @@
         android:layout_marginTop="16dp"
         android:drawableBottom="@drawable/section_header"
         android:paddingLeft="12dp"
-        android:text="Assignment Details"
+        android:text="@string/assignment_details"
+        android:textAppearance="?android:attr/listSeparatorTextViewStyle"
+        android:textColor="#31b6e7" />
+
+    <Spinner
+        android:id="@+id/periodSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/headerAssignmentDetails"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp" />
+
+    <TextView
+        android:id="@+id/headerDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/periodSpinner"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:drawableBottom="@drawable/section_header"
+        android:paddingLeft="12dp"
+        android:text="@string/description"
         android:textAppearance="?android:attr/listSeparatorTextViewStyle"
         android:textColor="#31b6e7" />
 
@@ -24,13 +49,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/assignmentDetails"
+        android:layout_below="@+id/headerDescription"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:ems="10"
         android:gravity="top"
-        android:hint="Description (Optional)"
-        android:lines="5"
+        android:hint="@string/description_examples"
+        android:lines="6"
         android:singleLine="false" />
 
     <LinearLayout
@@ -93,30 +118,6 @@
             android:onClick="takePhotoOfAssignment"
             android:src="@drawable/ic_menu_camera" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/classDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/description2"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:drawableBottom="@drawable/section_header"
-        android:paddingLeft="12dp"
-        android:text="Class Details"
-        android:textAppearance="?android:attr/listSeparatorTextViewStyle"
-        android:textColor="#31b6e7" />
-
-    <Spinner
-        android:id="@+id/periodSpinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/classDetails"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:paddingBottom="12dp"
-        android:paddingTop="12dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
