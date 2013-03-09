@@ -4,180 +4,232 @@
     android:layout_height="match_parent"
     tools:context=".PostAssignmentActivity" >
 
-    <TextView
-        android:id="@+id/headerAssignmentDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:drawableBottom="@drawable/section_header"
-        android:paddingLeft="12dp"
-        android:text="@string/assignment_details"
-        android:textAppearance="?android:attr/listSeparatorTextViewStyle"
-        android:textColor="#31b6e7" />
-
-    <Spinner
-        android:id="@+id/periodSpinner"
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/headerAssignmentDetails"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:paddingBottom="12dp"
-        android:paddingTop="12dp" />
+        android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/headerDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/periodSpinner"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:drawableBottom="@drawable/section_header"
-        android:paddingLeft="12dp"
-        android:text="@string/description"
-        android:textAppearance="?android:attr/listSeparatorTextViewStyle"
-        android:textColor="#31b6e7" />
-
-    <EditText
-        android:id="@+id/description"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/headerDescription"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:ems="10"
-        android:gravity="top"
-        android:hint="@string/description_examples"
-        android:lines="6"
-        android:singleLine="false" />
-
-    <LinearLayout
-        android:id="@+id/dateInfo"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/description"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp" >
-
-        <TextView
-            android:id="@+id/todayInfo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/date_info_border"
-            android:padding="16dp"
-            android:text="Today&apos;s Date" />
-
-        <TextView
-            android:id="@+id/tomorrowInfo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="1"
-            android:background="@drawable/date_info_border"
-            android:padding="16dp"
-            android:text="Tomorrow&apos;s Date" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/description2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/dateInfo"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp" >
-
-        <Button
-            android:id="@+id/dateDue"
-            style="@android:style/Widget.DeviceDefault.Light.Spinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="showDatePickerDialog"
-            android:paddingBottom="0dp"
-            android:paddingLeft="12dp"
-            android:paddingTop="0dp"
-            android:text="Date Due" />
-
-        <ImageButton
-            android:id="@+id/takePhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="Take Photo"
-            android:onClick="takePhotoOfAssignment"
-            android:src="@drawable/ic_menu_camera" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        style="?android:attr/buttonBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal" >
-
-        <LinearLayout
-            android:id="@+id/postAssignmentButton"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="postAssignment"
-            android:orientation="horizontal" >
-
-            <ImageView
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#0000"
-                android:clickable="false"
-                android:src="@drawable/navigation_accept" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
             <TextView
-                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/headerAssignmentDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#0000"
-                android:clickable="false"
-                android:text="Post" />
-        </LinearLayout>
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:drawableBottom="@drawable/section_header"
+                android:paddingLeft="12dp"
+                android:text="@string/header_assignment_details"
+                android:textAppearance="?android:attr/listSeparatorTextViewStyle"
+                android:textColor="#31b6e7" />
 
-        <LinearLayout
-            android:id="@+id/cancelAssignmentButton"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="cancelAssignment"
-            android:orientation="horizontal" >
-
-            <ImageView
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
+            <Spinner
+                android:id="@+id/periodSpinner"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#0000"
-                android:clickable="false"
-                android:src="@drawable/navigation_cancel" />
+                android:layout_below="@+id/headerAssignmentDetails"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp" />
 
             <TextView
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
+                android:id="@+id/headerDescription"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#0000"
-                android:clickable="false"
-                android:text="Cancel" />
-        </LinearLayout>
-    </LinearLayout>
+                android:layout_below="@+id/periodSpinner"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:drawableBottom="@drawable/section_header"
+                android:paddingLeft="12dp"
+                android:text="@string/header_description"
+                android:textAppearance="?android:attr/listSeparatorTextViewStyle"
+                android:textColor="#31b6e7" />
+
+            <EditText
+                android:id="@+id/description"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/headerDescription"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="@string/description_examples"
+                android:lines="6"
+                android:singleLine="false" />
+
+            <TextView
+                android:id="@+id/headerPhoto"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/description"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:drawableBottom="@drawable/section_header"
+                android:paddingLeft="12dp"
+                android:text="@string/header_photo"
+                android:textAppearance="?android:attr/listSeparatorTextViewStyle"
+                android:textColor="#31b6e7" />
+
+            <LinearLayout
+                android:id="@+id/takePhoto"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/headerPhoto"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp" >
+
+                <ImageButton
+                    android:id="@+id/takePhotoButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/take_photo_button"
+                    android:onClick="takePhoto"
+                    android:src="@drawable/ic_menu_camera" />
+
+                <TextView
+                    android:id="@+id/photoStatus"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="Photo not Attached"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/headerDueDate"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/takePhoto"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:drawableBottom="@drawable/section_header"
+                android:paddingLeft="12dp"
+                android:text="@string/header_due_date"
+                android:textAppearance="?android:attr/listSeparatorTextViewStyle"
+                android:textColor="#31b6e7" />
+
+            <LinearLayout
+                android:id="@+id/dateInfo"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/headerDueDate"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp" >
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1d" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="2d" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1w" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="2w" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/dateDue"
+                style="@android:style/Widget.DeviceDefault.Light.Spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dateInfo"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:onClick="showDatePickerDialog"
+                android:text="Date Due" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                style="?android:attr/buttonBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dateDue"
+                android:layout_marginTop="16dp" >
+
+                <LinearLayout
+                    android:id="@+id/postAssignmentButton"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="postAssignment"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#0000"
+                        android:clickable="false"
+                        android:src="@drawable/navigation_accept" />
+
+                    <TextView
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#0000"
+                        android:clickable="false"
+                        android:text="Add" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/cancelAssignmentButton"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="cancelAssignment"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#0000"
+                        android:clickable="false"
+                        android:src="@drawable/navigation_cancel" />
+
+                    <TextView
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#0000"
+                        android:clickable="false"
+                        android:text="Cancel" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
