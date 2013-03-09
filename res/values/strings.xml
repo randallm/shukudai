@@ -16,5 +16,8 @@
     <string name="take_photo_button">Take Photograph of Assignment</string>
     <string name="header_due_date">Due Date</string>
     <string name="post_new_assignment">New Assignment</string>
+    <string name="title_activity_assignment">AssignmentActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

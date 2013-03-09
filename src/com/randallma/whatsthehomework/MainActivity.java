@@ -7,7 +7,6 @@ import android.app.ActionBar.OnNavigationListener;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 public class MainActivity extends ListActivity {
+
+	public final static String MESSAGE_ASSIGNMENT_ID = "com.randallma.whatsthehomework.ASSIGNMENT_ID";
 
 	private AssignmentsDataSource dao;
 	private AssignmentAdapter adapter;
@@ -88,8 +89,11 @@ public class MainActivity extends ListActivity {
 					long id) {
 				Object o = getListView().getItemAtPosition(position);
 				Assignment fullO = (Assignment) o;
-				Log.i(MainActivity.class.getName(),
-						"You chose: " + fullO.getId());
+
+				Intent assignmentIntent = new Intent(MainActivity.this,
+						AssignmentActivity.class);
+				assignmentIntent.putExtra(MESSAGE_ASSIGNMENT_ID, fullO.getId());
+				startActivity(assignmentIntent);
 			}
 		});
 

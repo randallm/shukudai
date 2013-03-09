@@ -39,6 +39,14 @@
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="stateHidden" >
         </activity>
+        <activity
+            android:name="com.randallma.whatsthehomework.AssignmentActivity"
+            android:label="@string/title_activity_assignment"
+            android:parentActivityName="com.randallma.whatsthehomework.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.randallma.whatsthehomework.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

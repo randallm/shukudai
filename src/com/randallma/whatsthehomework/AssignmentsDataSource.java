@@ -12,9 +12,6 @@ import android.util.Log;
 public class AssignmentsDataSource {
 	private SQLiteDatabase db;
 	private final SQLiteHelper dbHelper;
-	private final String[] allColumns = { SQLiteHelper.COLUMN_ID,
-			SQLiteHelper.COLUMN_DESCRIPTION, SQLiteHelper.COLUMN_DATE_DUE,
-			SQLiteHelper.COLUMN_DATE_ASSIGNED, SQLiteHelper.COLUMN_IMAGE };
 
 	public AssignmentsDataSource(Context context) {
 		dbHelper = new SQLiteHelper(context);
@@ -37,7 +34,7 @@ public class AssignmentsDataSource {
 				assignment.getDateAssigned());
 		values.put(SQLiteHelper.COLUMN_IMAGE, assignment.getImageUri());
 		long insertId = db.insert(SQLiteHelper.TABLE_ASSIGNMENTS, null, values);
-		Cursor cursor = db.query(SQLiteHelper.TABLE_ASSIGNMENTS, allColumns,
+		Cursor cursor = db.query(SQLiteHelper.TABLE_ASSIGNMENTS, null,
 				SQLiteHelper.COLUMN_ID + " = " + insertId, null, null, null,
 				null);
 		cursor.moveToFirst();
@@ -57,8 +54,8 @@ public class AssignmentsDataSource {
 	public ArrayList<Assignment> getAllAssignments() {
 		ArrayList<Assignment> assignments = new ArrayList<Assignment>();
 
-		Cursor cursor = db.query(SQLiteHelper.TABLE_ASSIGNMENTS, allColumns,
-				null, null, null, null, SQLiteHelper.COLUMN_ID + " DESC");
+		Cursor cursor = db.query(SQLiteHelper.TABLE_ASSIGNMENTS, null, null,
+				null, null, null, SQLiteHelper.COLUMN_ID + " DESC");
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			Assignment assignment = cursorToAssignment(cursor);
@@ -70,7 +67,7 @@ public class AssignmentsDataSource {
 		return assignments;
 	}
 
-	private Assignment cursorToAssignment(Cursor cursor) {
+	public static Assignment cursorToAssignment(Cursor cursor) {
 		Assignment assignment = new Assignment();
 		assignment.setId(cursor.getLong(0));
 		assignment.setDescription(cursor.getString(1));
