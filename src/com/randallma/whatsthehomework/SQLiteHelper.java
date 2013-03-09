@@ -20,13 +20,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	public static final String TABLE_SCHOOL_CLASSES = "school_classes";
 	public static final String COLUMN_TITLE = "title";
 
-	public static final String DATABASE_CREATE = "create table "
+	public static final String TABLE_ASSIGNMENTS_CREATE = "create table "
 			+ TABLE_ASSIGNMENTS + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_DESCRIPTION
 			+ " text, " + COLUMN_DATE_DUE + " char, " + COLUMN_DATE_ASSIGNED
-			+ " char not null, " + COLUMN_IMAGE + " char); create table "
+			+ " char not null, " + COLUMN_IMAGE + " char);";
+
+	public static final String TABLE_SCHOOL_CLASSES_CREATE = "create table "
 			+ TABLE_SCHOOL_CLASSES + "(" + COLUMN_ID
-			+ "integer primary key autoincrement, " + COLUMN_TITLE
+			+ " integer primary key autoincrement, " + COLUMN_TITLE
 			+ " char not null);";
 
 	public SQLiteHelper(Context context) {
@@ -35,7 +37,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(DATABASE_CREATE);
+		db.execSQL(TABLE_ASSIGNMENTS_CREATE);
+		db.execSQL(TABLE_SCHOOL_CLASSES_CREATE);
 		db.execSQL("insert into assignments values(null, 'This is an example post.', 'Date Due', 'Date Assigned', null);");
 	}
 

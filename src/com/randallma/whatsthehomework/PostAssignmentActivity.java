@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -16,7 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +25,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class PostAssignmentActivity extends Activity {
@@ -46,11 +43,11 @@ public class PostAssignmentActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post_assignment);
 
-		populateDateBoxes();
+		// populateDateBoxes();
 		initSchoolClassSpinner();
 	}
 
-	public void takePhotoOfAssignment(View v) {
+	public void takePhoto(View v) {
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
 		try {
@@ -116,24 +113,24 @@ public class PostAssignmentActivity extends Activity {
 		}
 	}
 
-	private void populateDateBoxes() {
-		Calendar c = Calendar.getInstance();
-
-		TextView todayInfo = (TextView) findViewById(R.id.todayInfo);
-		String month = Integer.toString(c.get(Calendar.MONTH));
-		String day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
-		String year = Integer.toString(c.get(Calendar.YEAR)).substring(2, 4);
-		todayInfo.setText(Html.fromHtml("Date Today:<br>" + month + "/" + day
-				+ "/" + year));
-
-		TextView tomorrowInfo = (TextView) findViewById(R.id.tomorrowInfo);
-		c.add(Calendar.DAY_OF_YEAR, 7);
-		month = Integer.toString(c.get(Calendar.MONTH));
-		day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
-		year = Integer.toString(c.get(Calendar.YEAR)).substring(2, 4);
-		tomorrowInfo.setText(Html.fromHtml("Date Next Week:<br>" + month + "/"
-				+ day + "/" + year));
-	}
+	// private void populateDateBoxes() {
+	// Calendar c = Calendar.getInstance();
+	//
+	// TextView todayInfo = (TextView) findViewById(R.id.todayInfo);
+	// String month = Integer.toString(c.get(Calendar.MONTH));
+	// String day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+	// String year = Integer.toString(c.get(Calendar.YEAR)).substring(2, 4);
+	// todayInfo.setText(Html.fromHtml("Date Today:<br>" + month + "/" + day
+	// + "/" + year));
+	//
+	// TextView tomorrowInfo = (TextView) findViewById(R.id.tomorrowInfo);
+	// c.add(Calendar.DAY_OF_YEAR, 7);
+	// month = Integer.toString(c.get(Calendar.MONTH));
+	// day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+	// year = Integer.toString(c.get(Calendar.YEAR)).substring(2, 4);
+	// tomorrowInfo.setText(Html.fromHtml("Date Next Week:<br>" + month + "/"
+	// + day + "/" + year));
+	// }
 
 	private void initSchoolClassSpinner() {
 		ApplicationGlobal g = (ApplicationGlobal) getApplication();

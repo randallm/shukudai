@@ -36,7 +36,8 @@
             android:name="com.randallma.whatsthehomework.PostAssignmentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_post_assignment"
-            android:screenOrientation="nosensor" >
+            android:screenOrientation="nosensor"
+            android:windowSoftInputMode="stateHidden" >
         </activity>
     </application>
 
