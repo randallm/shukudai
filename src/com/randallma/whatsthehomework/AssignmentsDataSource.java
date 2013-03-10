@@ -33,6 +33,8 @@ public class AssignmentsDataSource {
 		values.put(SQLiteHelper.COLUMN_DATE_ASSIGNED,
 				assignment.getDateAssigned());
 		values.put(SQLiteHelper.COLUMN_IMAGE, assignment.getImageUri());
+		values.put(SQLiteHelper.COLUMN_SCHOOL_CLASS_ID,
+				assignment.getSchoolClassId());
 		long insertId = db.insert(SQLiteHelper.TABLE_ASSIGNMENTS, null, values);
 		Cursor cursor = db.query(SQLiteHelper.TABLE_ASSIGNMENTS, null,
 				SQLiteHelper.COLUMN_ID + " = " + insertId, null, null, null,
@@ -67,13 +69,41 @@ public class AssignmentsDataSource {
 		return assignments;
 	}
 
-	public static Assignment cursorToAssignment(Cursor cursor) {
+	public ArrayList<Assignment> getFilteredAssignments(Long schoolClassId) {
+		ArrayList<Assignment> assignments = new ArrayList<Assignment>();
+
+		Cursor cursor = db.query(SQLiteHelper.TABLE_ASSIGNMENTS, null,
+				SQLiteHelper.COLUMN_SCHOOL_CLASS_ID + " = ?",
+				new String[] { Long.toString(schoolClassId) }, null, null,
+				SQLiteHelper.COLUMN_ID + " DESC");
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Assignment assignment = cursorToAssignment(cursor);
+			assignments.add(assignment);
+			cursor.moveToNext();
+		}
+
+		cursor.close();
+		return assignments;
+	}
+
+	private Assignment cursorToAssignment(Cursor cursor) {
 		Assignment assignment = new Assignment();
 		assignment.setId(cursor.getLong(0));
 		assignment.setDescription(cursor.getString(1));
 		assignment.setDateDue(cursor.getString(2));
 		assignment.setDateAssigned(cursor.getString(3));
 		assignment.setImageUri(cursor.getString(4));
+
+		Cursor schoolClassCursor = db.query(SQLiteHelper.TABLE_SCHOOL_CLASSES,
+				null, SQLiteHelper.COLUMN_ID + " = ?",
+				new String[] { Integer.toString(cursor.getInt(5)) }, null,
+				null, null, null);
+		schoolClassCursor.moveToFirst();
+		assignment.setSchoolClass(schoolClassCursor.getString(1));
+
+		assignment.setSchoolClassId(cursor.getInt(5));
+
 		return assignment;
 	}
 }

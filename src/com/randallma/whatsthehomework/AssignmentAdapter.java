@@ -44,6 +44,8 @@ public class AssignmentAdapter extends BaseAdapter {
 					null);
 			holder = new ViewHolder();
 
+			holder.txtSchoolClass = (TextView) convertView
+					.findViewById(R.id.schoolClass);
 			holder.txtThumbnail = (ImageView) convertView
 					.findViewById(R.id.thumbnail);
 			holder.txtDateDue = (TextView) convertView
@@ -58,6 +60,8 @@ public class AssignmentAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
+		holder.txtSchoolClass.setText(assignmentArrayList.get(position)
+				.getSchoolClass());
 		boolean imageExists = (assignmentArrayList.get(position).getImageUri() == null) ? false
 				: true;
 		if (imageExists == true) {
@@ -76,6 +80,7 @@ public class AssignmentAdapter extends BaseAdapter {
 	}
 
 	static class ViewHolder {
+		TextView txtSchoolClass;
 		ImageView txtThumbnail;
 		TextView txtDateDue;
 		TextView txtDateAssigned;

@@ -24,11 +24,25 @@ public class AssignmentActivity extends Activity {
 		final SQLiteHelper dbHelper = new SQLiteHelper(this);
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-		Cursor cursor = db.query("assignments", null, SQLiteHelper.COLUMN_ID
-				+ " = ?", new String[] { assignmentId }, null, null, null);
+		Cursor cursor = db.query(SQLiteHelper.TABLE_ASSIGNMENTS, null,
+				SQLiteHelper.COLUMN_ID + " = ?", new String[] { assignmentId },
+				null, null, null);
 		cursor.moveToFirst();
-		Assignment assignment = AssignmentsDataSource
-				.cursorToAssignment(cursor);
+
+		Assignment assignment = new Assignment();
+		assignment.setId(cursor.getLong(0));
+		assignment.setDescription(cursor.getString(1));
+		assignment.setDateDue(cursor.getString(2));
+		assignment.setDateAssigned(cursor.getString(3));
+		assignment.setImageUri(cursor.getString(4));
+
+		Cursor schoolClassCursor = db.query(SQLiteHelper.TABLE_SCHOOL_CLASSES,
+				null, SQLiteHelper.COLUMN_ID + " = ?",
+				new String[] { Integer.toString(cursor.getInt(5)) }, null,
+				null, null, null);
+		schoolClassCursor.moveToFirst();
+		assignment.setSchoolClass(schoolClassCursor.getString(1));
+
 		cursor.close();
 	}
 

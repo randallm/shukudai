@@ -6,6 +6,8 @@ public class Assignment {
 	private String dateDue;
 	private String dateAssigned;
 	private String imageUri;
+	private String schoolClass;
+	private long schoolClassId;
 
 	public long getId() {
 		return id;
@@ -45,5 +47,21 @@ public class Assignment {
 
 	public void setImageUri(String imageUri) {
 		this.imageUri = imageUri;
+	}
+
+	public String getSchoolClass() {
+		return schoolClass;
+	}
+
+	public void setSchoolClass(String schoolClass) {
+		this.schoolClass = schoolClass;
+	}
+
+	public long getSchoolClassId() {
+		return schoolClassId;
+	}
+
+	public void setSchoolClassId(long schoolClassId) {
+		this.schoolClassId = schoolClassId;
 	}
 }

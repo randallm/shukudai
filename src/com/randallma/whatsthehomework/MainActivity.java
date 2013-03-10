@@ -2,10 +2,13 @@ package com.randallma.whatsthehomework;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,31 +26,15 @@ public class MainActivity extends ListActivity {
 	private AssignmentAdapter adapter;
 	private ArrayList<Assignment> assignments;
 
-	ArrayList<Integer> schoolClassIds;
-	ArrayList<String> schoolClassItems;
+	private ArrayList<Integer> schoolClassIds;
+	private ArrayList<String> schoolClassItems;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		if (getIntent().getStringExtra(PostAssignmentActivity.COMPLETED_POST) != null) {
-			dao = new AssignmentsDataSource(this);
-			dao.open();
-			assignments = dao.getAllAssignments();
-			adapter = g.getAssignmentAdapter();
-			adapter.notifyDataSetChanged();
-			dao.close();
-		}
-
 		setClassList();
-
-		schoolClassIds = new ArrayList<Integer>(g.getSchoolClassIds());
-		schoolClassItems = new ArrayList<String>(g.getSchoolClassItems());
-		schoolClassIds.add(0, -1);
-		schoolClassItems.add(0, "All Assignments");
-
 		ArrayAdapter<String> classSpinnerAdapter = new ArrayAdapter<String>(
 				this, R.layout.dark_action_bar_spinner_dropdown_item,
 				schoolClassItems);
@@ -61,21 +48,27 @@ public class MainActivity extends ListActivity {
 						schoolClassItems.get(itemPosition), Toast.LENGTH_SHORT)
 						.show();
 
-				if (schoolClassIds.get(itemPosition) == -1) {
-					dao = new AssignmentsDataSource(MainActivity.this);
-					dao.open();
+				dao = new AssignmentsDataSource(MainActivity.this);
+				dao.open();
 
+				if (schoolClassIds.get(itemPosition) == -1) {
 					assignments = dao.getAllAssignments();
 
-					ApplicationGlobal g = (ApplicationGlobal) getApplication();
 					adapter = new AssignmentAdapter(MainActivity.this,
 							assignments);
-					g.setAssignmentAdapter(adapter);
 					setListAdapter(adapter);
 					adapter.notifyDataSetChanged();
+				} else {
+					assignments = dao
+							.getFilteredAssignments((long) schoolClassIds
+									.get(itemPosition));
 
-					dao.close();
+					adapter = new AssignmentAdapter(MainActivity.this,
+							assignments);
+					setListAdapter(adapter);
+					adapter.notifyDataSetChanged();
 				}
+				dao.close();
 				return false;
 			}
 		};
@@ -99,20 +92,30 @@ public class MainActivity extends ListActivity {
 
 	}
 
+	@SuppressLint("UseSparseArrays")
 	private void setClassList() {
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+		schoolClassIds = new ArrayList<Integer>();
+		schoolClassItems = new ArrayList<String>();
 
-		ArrayList<Integer> schoolClassIds = new ArrayList<Integer>();
-		schoolClassIds.add(1);
-		g.setSchoolClassIds(schoolClassIds);
-		ArrayList<String> schoolClassItems = new ArrayList<String>();
-		schoolClassItems.add("Crumpets 2013-2014 AP Tastiness");
-		g.setSchoolClassItems(schoolClassItems);
+		schoolClassIds.add(-1);
+		schoolClassItems.add("All Assignments");
+
+		final SQLiteHelper dbHelper = new SQLiteHelper(this);
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(SQLiteHelper.TABLE_SCHOOL_CLASSES, null, null,
+				null, null, null, SQLiteHelper.COLUMN_ID + " DESC");
+		cursor.moveToFirst();
+		for (int i = 0; i < cursor.getCount(); i++) {
+			schoolClassIds.add(cursor.getInt(0));
+			schoolClassItems.add(cursor.getString(1));
+			cursor.moveToNext();
+		}
+		cursor.close();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}

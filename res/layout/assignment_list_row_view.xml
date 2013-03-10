@@ -54,25 +54,11 @@
                 android:singleLine="false" />
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/dateAssigned"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp" >
-
-            <TextView
-                android:id="@+id/dateAssigned"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="2 comments"
-                android:textStyle="italic" />
-        </LinearLayout>
+            android:layout_margin="12dp" />
     </LinearLayout>
 
 </FrameLayout>

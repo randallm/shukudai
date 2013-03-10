@@ -16,20 +16,24 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_DATE_DUE = "date_due";
 	public static final String COLUMN_DATE_ASSIGNED = "date_assigned";
 	public static final String COLUMN_IMAGE = "image_uri";
+	public static final String COLUMN_SCHOOL_CLASS_ID = "school_class_id";
 
 	public static final String TABLE_SCHOOL_CLASSES = "school_classes";
 	public static final String COLUMN_TITLE = "title";
-
-	public static final String TABLE_ASSIGNMENTS_CREATE = "create table "
-			+ TABLE_ASSIGNMENTS + "(" + COLUMN_ID
-			+ " integer primary key autoincrement, " + COLUMN_DESCRIPTION
-			+ " text, " + COLUMN_DATE_DUE + " char, " + COLUMN_DATE_ASSIGNED
-			+ " char not null, " + COLUMN_IMAGE + " char);";
 
 	public static final String TABLE_SCHOOL_CLASSES_CREATE = "create table "
 			+ TABLE_SCHOOL_CLASSES + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_TITLE
 			+ " char not null);";
+
+	public static final String TABLE_ASSIGNMENTS_CREATE = "create table "
+			+ TABLE_ASSIGNMENTS + "(" + COLUMN_ID
+			+ " integer primary key autoincrement, " + COLUMN_DESCRIPTION
+			+ " text, " + COLUMN_DATE_DUE + " char, " + COLUMN_DATE_ASSIGNED
+			+ " char not null, " + COLUMN_IMAGE + " char, "
+			+ COLUMN_SCHOOL_CLASS_ID + " integer, foreign key("
+			+ COLUMN_SCHOOL_CLASS_ID + ") references " + TABLE_SCHOOL_CLASSES
+			+ "(" + COLUMN_ID + "));";
 
 	public SQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,9 +41,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(TABLE_ASSIGNMENTS_CREATE);
 		db.execSQL(TABLE_SCHOOL_CLASSES_CREATE);
-		db.execSQL("insert into assignments values(null, 'This is an example post.', 'Date Due', 'Date Assigned', null);");
+		db.execSQL(TABLE_ASSIGNMENTS_CREATE);
+		db.execSQL("insert into school_classes values(null, 'AP Class 20XX-20XX');");
+		db.execSQL("insert into assignments values(null, 'This is an example post.', 'Date Due', 'Date Assigned', null, 1);");
+
+		db.execSQL("insert into school_classes values(null, 'AP Class2 20XX-20XX');");
+		db.execSQL("insert into assignments values(null, 'This is an example post2', 'Date Due2', 'Date Assigned2', null, 2);");
 	}
 
 	@Override

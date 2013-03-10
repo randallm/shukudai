@@ -3,13 +3,18 @@ package com.randallma.whatsthehomework;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,9 +24,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -29,13 +33,13 @@ import android.widget.Toast;
 
 public class PostAssignmentActivity extends Activity {
 
-	public final static String COMPLETED_POST = "com.randallma.whatsthehomework.COMPLETED_POST";
-
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	private File photo;
 	private Uri photoUri;
 
-	int schoolClass;
+	private Spinner classSpinner;
+	private ArrayList<Integer> schoolClassIds;
+	private ArrayList<String> schoolClassItems;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -132,30 +136,32 @@ public class PostAssignmentActivity extends Activity {
 	// + day + "/" + year));
 	// }
 
+	@SuppressLint("UseSparseArrays")
 	private void initSchoolClassSpinner() {
-		ApplicationGlobal g = (ApplicationGlobal) getApplication();
+		schoolClassIds = new ArrayList<Integer>();
+		schoolClassItems = new ArrayList<String>();
 
-		Spinner periodSpinner = (Spinner) findViewById(R.id.periodSpinner);
-		ArrayList<String> periodSpinnerItems = g.getSchoolClassItems();
-		ArrayAdapter<String> periodSpinnerAdapter = new ArrayAdapter<String>(
-				this, android.R.layout.simple_spinner_item, periodSpinnerItems);
-		periodSpinnerAdapter
+		final SQLiteHelper dbHelper = new SQLiteHelper(this);
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(SQLiteHelper.TABLE_SCHOOL_CLASSES, null, null,
+				null, null, null, SQLiteHelper.COLUMN_ID + " DESC");
+		cursor.moveToFirst();
+		for (int i = 0; i < cursor.getCount(); i++) {
+			schoolClassIds.add(cursor.getInt(0));
+			schoolClassItems.add(cursor.getString(1));
+			cursor.moveToNext();
+		}
+		cursor.close();
+
+		ArrayAdapter<String> classSpinnerAdapter = new ArrayAdapter<String>(
+				this, android.R.layout.simple_spinner_item, schoolClassItems);
+		classSpinnerAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		periodSpinner.setAdapter(periodSpinnerAdapter);
 
-		periodSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-				ApplicationGlobal g = (ApplicationGlobal) getApplication();
-				ArrayList<Integer> schoolClassIds = g.getSchoolClassIds();
-				schoolClass = schoolClassIds.get(position);
-			}
+		classSpinner = (Spinner) findViewById(R.id.classSpinner);
+		classSpinner.setAdapter(classSpinnerAdapter);
 
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-			}
-		});
 	}
 
 	public void showDatePickerDialog(View v) {
@@ -165,11 +171,21 @@ public class PostAssignmentActivity extends Activity {
 
 	public boolean postAssignment(View v) {
 		Assignment assignment = new Assignment();
-		assignment.setId(schoolClass);
+
+		Long schoolClassId = (long) schoolClassIds.get(classSpinner
+				.getSelectedItemPosition());
+		assignment.setSchoolClassId(schoolClassId);
+
 		assignment.setDescription(((EditText) findViewById(R.id.description))
 				.getText().toString());
-		assignment.setDateDue("Date Due Placeholder");
-		assignment.setDateAssigned("Date Assigned Placeholder");
+
+		assignment.setDateDue(((Button) findViewById(R.id.dateDue)).getText()
+				.toString());
+
+		String timeStamp = new SimpleDateFormat("MM/dd/yy").format(Calendar
+				.getInstance().getTime());
+		assignment.setDateAssigned(timeStamp);
+
 		if (photoUri != null) {
 			assignment.setImageUri(photoUri.toString());
 		} else {
@@ -182,9 +198,8 @@ public class PostAssignmentActivity extends Activity {
 		dao.close();
 
 		Toast.makeText(this, "Assignment Added", Toast.LENGTH_SHORT).show();
-		Intent completedPostIntent = new Intent(this, MainActivity.class);
 
-		completedPostIntent.putExtra(COMPLETED_POST, "true");
+		Intent completedPostIntent = new Intent(this, MainActivity.class);
 		startActivity(completedPostIntent);
 		finish();
 

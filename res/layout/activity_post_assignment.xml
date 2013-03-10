@@ -28,7 +28,7 @@
                 android:textColor="#31b6e7" />
 
             <Spinner
-                android:id="@+id/periodSpinner"
+                android:id="@+id/classSpinner"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/headerAssignmentDetails"
@@ -44,7 +44,7 @@
                 android:id="@+id/headerDescription"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/periodSpinner"
+                android:layout_below="@+id/classSpinner"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
