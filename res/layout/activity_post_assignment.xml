@@ -105,7 +105,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:gravity="center"
-                    android:text="Photo not Attached"
+                    android:text="Photo not attached"
                     android:textSize="16sp" />
             </LinearLayout>
 

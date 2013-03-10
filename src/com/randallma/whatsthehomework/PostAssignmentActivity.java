@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class PostAssignmentActivity extends Activity {
@@ -129,8 +130,8 @@ public class PostAssignmentActivity extends Activity {
 
 					postAssignmentButton.setClickable(true);
 
-					System.out.println(photo.getAbsolutePath());
-					System.out.println(photoUri);
+					TextView photoStatus = (TextView) findViewById(R.id.photoStatus);
+					photoStatus.setText("Photo attached");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
