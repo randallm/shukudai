@@ -9,7 +9,6 @@ import java.util.Calendar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -196,7 +195,7 @@ public class PostAssignmentActivity extends Activity {
 	}
 
 	public void showDatePickerDialog(View v) {
-		DialogFragment datePickerFragment = new DateDuePickerFragment();
+		DateDuePickerFragment datePickerFragment = new DateDuePickerFragment();
 		datePickerFragment.show(getFragmentManager(), "datePicker");
 	}
 

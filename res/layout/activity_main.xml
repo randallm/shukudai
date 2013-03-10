@@ -12,16 +12,4 @@
         android:listSelector="@android:color/transparent" >
     </ListView>
 
-    <RelativeLayout
-        android:id="@id/android:empty"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center" >
-
-        <ProgressBar
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
-
 </RelativeLayout>

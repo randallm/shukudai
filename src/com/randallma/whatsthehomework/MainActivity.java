@@ -2,10 +2,14 @@ package com.randallma.whatsthehomework;
 
 import java.util.ArrayList;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends ListActivity {
@@ -26,17 +31,58 @@ public class MainActivity extends ListActivity {
 	private AssignmentAdapter adapter;
 	private ArrayList<Assignment> assignments;
 
+	private ArrayAdapter<String> classSpinnerAdapter;
 	private ArrayList<Integer> schoolClassIds;
 	private ArrayList<String> schoolClassItems;
+
+	private EditText desiredTitle;
+	private Dialog newClassPopupDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		setClassList();
-		ArrayAdapter<String> classSpinnerAdapter = new ArrayAdapter<String>(
-				this, R.layout.dark_action_bar_spinner_dropdown_item,
+		initSchoolClassSpinner();
+
+		getListView().setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> a, View v, int position,
+					long id) {
+				Object o = getListView().getItemAtPosition(position);
+				Assignment fullO = (Assignment) o;
+
+				Intent assignmentIntent = new Intent(MainActivity.this,
+						AssignmentActivity.class);
+				assignmentIntent.putExtra(MESSAGE_ASSIGNMENT_ID, fullO.getId());
+				startActivity(assignmentIntent);
+			}
+		});
+
+	}
+
+	private void initSchoolClassSpinner() {
+		schoolClassIds = new ArrayList<Integer>();
+		schoolClassItems = new ArrayList<String>();
+
+		schoolClassIds.add(-1);
+		schoolClassItems.add("New Assignments");
+
+		final SQLiteHelper dbHelper = new SQLiteHelper(this);
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		Cursor cursor = db.query(SQLiteHelper.TABLE_SCHOOL_CLASSES, null, null,
+				null, null, null, SQLiteHelper.COLUMN_ID + " DESC");
+		cursor.moveToFirst();
+		for (int i = 0; i < cursor.getCount(); i++) {
+			schoolClassIds.add(cursor.getInt(0));
+			schoolClassItems.add(cursor.getString(1));
+			cursor.moveToNext();
+		}
+		cursor.close();
+
+		classSpinnerAdapter = new ArrayAdapter<String>(this,
+				R.layout.dark_action_bar_spinner_dropdown_item,
 				schoolClassItems);
 
 		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -44,15 +90,11 @@ public class MainActivity extends ListActivity {
 			@Override
 			public boolean onNavigationItemSelected(int itemPosition,
 					long itemId) {
-				Toast.makeText(MainActivity.this,
-						schoolClassItems.get(itemPosition), Toast.LENGTH_SHORT)
-						.show();
-
 				dao = new AssignmentsDataSource(MainActivity.this);
 				dao.open();
 
 				if (schoolClassIds.get(itemPosition) == -1) {
-					assignments = dao.getAllAssignments();
+					assignments = dao.getNewAssignments();
 
 					adapter = new AssignmentAdapter(MainActivity.this,
 							assignments);
@@ -75,43 +117,42 @@ public class MainActivity extends ListActivity {
 
 		getActionBar().setListNavigationCallbacks(classSpinnerAdapter,
 				navigationListener);
-
-		getListView().setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> a, View v, int position,
-					long id) {
-				Object o = getListView().getItemAtPosition(position);
-				Assignment fullO = (Assignment) o;
-
-				Intent assignmentIntent = new Intent(MainActivity.this,
-						AssignmentActivity.class);
-				assignmentIntent.putExtra(MESSAGE_ASSIGNMENT_ID, fullO.getId());
-				startActivity(assignmentIntent);
-			}
-		});
-
 	}
 
-	@SuppressLint("UseSparseArrays")
-	private void setClassList() {
-		schoolClassIds = new ArrayList<Integer>();
-		schoolClassItems = new ArrayList<String>();
+	private void addNewSchoolClass() {
+		AlertDialog.Builder newClassPopup = new AlertDialog.Builder(this);
+		newClassPopup.setTitle("Add New Class");
+		desiredTitle = new EditText(this);
+		newClassPopup.setView(desiredTitle);
+		newClassPopup.setMessage("Title (ex: P1 AP Chemistry):");
+		newClassPopup.setPositiveButton("Add", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				final SQLiteHelper dbHelper = new SQLiteHelper(
+						MainActivity.this);
+				SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-		schoolClassIds.add(-1);
-		schoolClassItems.add("All Assignments");
+				ContentValues values = new ContentValues();
+				values.put(SQLiteHelper.COLUMN_TITLE, desiredTitle.getText()
+						.toString());
+				db.insert(SQLiteHelper.TABLE_SCHOOL_CLASSES, null, values);
 
-		final SQLiteHelper dbHelper = new SQLiteHelper(this);
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
+				Toast.makeText(
+						MainActivity.this,
+						"Class \"" + desiredTitle.getText().toString()
+								+ "\" Added", Toast.LENGTH_SHORT).show();
 
-		Cursor cursor = db.query(SQLiteHelper.TABLE_SCHOOL_CLASSES, null, null,
-				null, null, null, SQLiteHelper.COLUMN_ID + " DESC");
-		cursor.moveToFirst();
-		for (int i = 0; i < cursor.getCount(); i++) {
-			schoolClassIds.add(cursor.getInt(0));
-			schoolClassItems.add(cursor.getString(1));
-			cursor.moveToNext();
-		}
-		cursor.close();
+				initSchoolClassSpinner();
+			}
+		});
+		newClassPopup.setNegativeButton("Cancel", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				newClassPopupDialog.dismiss();
+			}
+		});
+		newClassPopupDialog = newClassPopup.create();
+		newClassPopupDialog.show();
 	}
 
 	@Override
@@ -127,6 +168,11 @@ public class MainActivity extends ListActivity {
 			Intent postAssignment = new Intent(this,
 					PostAssignmentActivity.class);
 			startActivity(postAssignment);
+			finish();
+			return true;
+		case R.id.add_new_school_class:
+			addNewSchoolClass();
+			return true;
 		case R.id.menu_settings:
 			return true;
 		default:

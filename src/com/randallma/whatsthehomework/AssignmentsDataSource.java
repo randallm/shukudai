@@ -35,6 +35,7 @@ public class AssignmentsDataSource {
 		values.put(SQLiteHelper.COLUMN_IMAGE, assignment.getImageUri());
 		values.put(SQLiteHelper.COLUMN_SCHOOL_CLASS_ID,
 				assignment.getSchoolClassId());
+		values.put(SQLiteHelper.COLUMN_ARCHIVED, 0);
 		long insertId = db.insert(SQLiteHelper.TABLE_ASSIGNMENTS, null, values);
 		Cursor cursor = db.query(SQLiteHelper.TABLE_ASSIGNMENTS, null,
 				SQLiteHelper.COLUMN_ID + " = " + insertId, null, null, null,
@@ -53,11 +54,12 @@ public class AssignmentsDataSource {
 				+ " = " + id, null);
 	}
 
-	public ArrayList<Assignment> getAllAssignments() {
+	public ArrayList<Assignment> getNewAssignments() {
 		ArrayList<Assignment> assignments = new ArrayList<Assignment>();
 
-		Cursor cursor = db.query(SQLiteHelper.TABLE_ASSIGNMENTS, null, null,
-				null, null, null, SQLiteHelper.COLUMN_ID + " DESC");
+		Cursor cursor = db.query(SQLiteHelper.TABLE_ASSIGNMENTS, null,
+				SQLiteHelper.COLUMN_ARCHIVED + " = 0", null, null, null,
+				SQLiteHelper.COLUMN_ID + " DESC");
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			Assignment assignment = cursorToAssignment(cursor);
