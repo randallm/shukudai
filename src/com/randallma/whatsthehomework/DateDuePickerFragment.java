@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.DatePicker;
 
-public class DatePickerFragment extends DialogFragment implements
+public class DateDuePickerFragment extends DialogFragment implements
 		OnDateSetListener {
 
 	@Override
@@ -35,4 +35,5 @@ public class DatePickerFragment extends DialogFragment implements
 		String sDay = Integer.toString(day);
 		dateDueButton.setText(sMonth + "/" + sDay + "/" + sYear);
 	}
+
 }

@@ -133,24 +133,28 @@
                 android:layout_marginTop="8dp" >
 
                 <Button
+                    android:id="@+id/d1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="1d" />
 
                 <Button
+                    android:id="@+id/d2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="2d" />
 
                 <Button
+                    android:id="@+id/w1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="1w" />
 
                 <Button
+                    android:id="@+id/w2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

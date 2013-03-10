@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,8 +48,36 @@ public class PostAssignmentActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post_assignment);
 
-		// populateDateBoxes();
 		initSchoolClassSpinner();
+
+		Button d1 = (Button) findViewById(R.id.d1);
+		d1.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				calculateDateDue("1d");
+			}
+		});
+		Button d2 = (Button) findViewById(R.id.d2);
+		d2.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				calculateDateDue("2d");
+			}
+		});
+		Button w1 = (Button) findViewById(R.id.w1);
+		w1.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				calculateDateDue("1w");
+			}
+		});
+		Button w2 = (Button) findViewById(R.id.w2);
+		w2.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				calculateDateDue("2w");
+			}
+		});
 	}
 
 	public void takePhoto(View v) {
@@ -117,24 +146,25 @@ public class PostAssignmentActivity extends Activity {
 		}
 	}
 
-	// private void populateDateBoxes() {
-	// Calendar c = Calendar.getInstance();
-	//
-	// TextView todayInfo = (TextView) findViewById(R.id.todayInfo);
-	// String month = Integer.toString(c.get(Calendar.MONTH));
-	// String day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
-	// String year = Integer.toString(c.get(Calendar.YEAR)).substring(2, 4);
-	// todayInfo.setText(Html.fromHtml("Date Today:<br>" + month + "/" + day
-	// + "/" + year));
-	//
-	// TextView tomorrowInfo = (TextView) findViewById(R.id.tomorrowInfo);
-	// c.add(Calendar.DAY_OF_YEAR, 7);
-	// month = Integer.toString(c.get(Calendar.MONTH));
-	// day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
-	// year = Integer.toString(c.get(Calendar.YEAR)).substring(2, 4);
-	// tomorrowInfo.setText(Html.fromHtml("Date Next Week:<br>" + month + "/"
-	// + day + "/" + year));
-	// }
+	private void calculateDateDue(String preset) {
+		Button dateDueButton = (Button) findViewById(R.id.dateDue);
+		Calendar c = Calendar.getInstance();
+
+		if (preset.equals("1d")) {
+			c.add(Calendar.DATE, 1);
+		} else if (preset.equals("2d")) {
+			c.add(Calendar.DATE, 2);
+		} else if (preset.equals("1w")) {
+			c.add(Calendar.DATE, 7);
+		} else if (preset.equals("2w")) {
+			c.add(Calendar.DATE, 14);
+		}
+
+		String sYear = Integer.toString(c.get(Calendar.YEAR));
+		String sMonth = Integer.toString(c.get(Calendar.MONTH));
+		String sDay = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+		dateDueButton.setText(sMonth + "/" + sDay + "/" + sYear);
+	}
 
 	@SuppressLint("UseSparseArrays")
 	private void initSchoolClassSpinner() {
@@ -165,7 +195,7 @@ public class PostAssignmentActivity extends Activity {
 	}
 
 	public void showDatePickerDialog(View v) {
-		DialogFragment datePickerFragment = new DatePickerFragment();
+		DialogFragment datePickerFragment = new DateDuePickerFragment();
 		datePickerFragment.show(getFragmentManager(), "datePicker");
 	}
 
