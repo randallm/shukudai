@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends ListActivity {
@@ -58,7 +59,6 @@ public class MainActivity extends ListActivity {
 				startActivity(assignmentIntent);
 			}
 		});
-
 	}
 
 	private void initSchoolClassSpinner() {
@@ -71,8 +71,10 @@ public class MainActivity extends ListActivity {
 		final SQLiteHelper dbHelper = new SQLiteHelper(this);
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-		Cursor cursor = db.query(SQLiteHelper.TABLE_SCHOOL_CLASSES, null, null,
-				null, null, null, SQLiteHelper.COLUMN_ID + " DESC");
+		Cursor cursor = db
+				.query(SQLiteHelper.TABLE_SCHOOL_CLASSES, null, null, null,
+						null, null, SQLiteHelper.COLUMN_TITLE
+								+ " COLLATE NOCASE");
 		cursor.moveToFirst();
 		for (int i = 0; i < cursor.getCount(); i++) {
 			schoolClassIds.add(cursor.getInt(0));
@@ -94,6 +96,8 @@ public class MainActivity extends ListActivity {
 				dao.open();
 
 				if (schoolClassIds.get(itemPosition) == -1) {
+					enableSwipe();
+
 					assignments = dao.getNewAssignments();
 
 					adapter = new AssignmentAdapter(MainActivity.this,
@@ -101,6 +105,8 @@ public class MainActivity extends ListActivity {
 					setListAdapter(adapter);
 					adapter.notifyDataSetChanged();
 				} else {
+					disableSwipe();
+
 					assignments = dao
 							.getFilteredAssignments((long) schoolClassIds
 									.get(itemPosition));
@@ -117,6 +123,44 @@ public class MainActivity extends ListActivity {
 
 		getActionBar().setListNavigationCallbacks(classSpinnerAdapter,
 				navigationListener);
+	}
+
+	private void enableSwipe() {
+		ListView listView = getListView();
+		SwipeDismissListViewTouchListener touchListener = new SwipeDismissListViewTouchListener(
+				listView,
+				new SwipeDismissListViewTouchListener.OnDismissCallback() {
+					@Override
+					public void onDismiss(ListView listView,
+							int[] reverseSortedPositions) {
+						final SQLiteHelper dbHelper = new SQLiteHelper(
+								MainActivity.this);
+						SQLiteDatabase db = dbHelper.getWritableDatabase();
+						db.execSQL("update "
+								+ SQLiteHelper.TABLE_ASSIGNMENTS
+								+ " set "
+								+ SQLiteHelper.COLUMN_ARCHIVED
+								+ "=1 where "
+								+ SQLiteHelper.COLUMN_ID
+								+ "="
+								+ assignments.get(reverseSortedPositions[0])
+										.getId());
+
+						assignments.remove(reverseSortedPositions[0]);
+						adapter = new AssignmentAdapter(MainActivity.this,
+								assignments);
+						setListAdapter(adapter);
+						adapter.notifyDataSetChanged();
+					}
+				});
+		listView.setOnTouchListener(touchListener);
+		listView.setOnScrollListener(touchListener.makeScrollListener());
+	}
+
+	private void disableSwipe() {
+		ListView listView = getListView();
+		listView.setOnTouchListener(null);
+		listView.setOnScrollListener(null);
 	}
 
 	private void addNewSchoolClass() {

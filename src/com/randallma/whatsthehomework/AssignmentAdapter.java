@@ -86,4 +86,5 @@ public class AssignmentAdapter extends BaseAdapter {
 		TextView txtDateAssigned;
 		TextView txtDescription;
 	}
+
 }
