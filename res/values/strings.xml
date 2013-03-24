@@ -20,5 +20,8 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="add_new_school_class">New Class</string>
+    <string name="action">Perform action</string>
+    <string name="undobar_sample_message">Action performed.</string>
+    <string name="undo">Undo</string>
 
 </resources>

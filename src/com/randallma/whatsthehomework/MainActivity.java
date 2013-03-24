@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +25,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends ListActivity {
+import com.randallma.whatsthehomework.UndoBarController.UndoListener;
+
+public class MainActivity extends ListActivity implements UndoListener {
 
 	public final static String MESSAGE_ASSIGNMENT_ID = "com.randallma.whatsthehomework.ASSIGNMENT_ID";
 
@@ -38,6 +41,10 @@ public class MainActivity extends ListActivity {
 
 	private EditText desiredTitle;
 	private Dialog newClassPopupDialog;
+
+	private long recentlyArchivedId;
+	private int recentlyArchivedListPos;
+	private UndoBarController undoBarController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,9 @@ public class MainActivity extends ListActivity {
 				startActivity(assignmentIntent);
 			}
 		});
+
+		undoBarController = new UndoBarController(findViewById(R.id.undobar),
+				this);
 	}
 
 	private void initSchoolClassSpinner() {
@@ -133,6 +143,12 @@ public class MainActivity extends ListActivity {
 					@Override
 					public void onDismiss(ListView listView,
 							int[] reverseSortedPositions) {
+						recentlyArchivedId = assignments.get(
+								reverseSortedPositions[0]).getId();
+						recentlyArchivedListPos = assignments
+								.indexOf(assignments
+										.get(reverseSortedPositions[0]));
+
 						final SQLiteHelper dbHelper = new SQLiteHelper(
 								MainActivity.this);
 						SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -151,6 +167,9 @@ public class MainActivity extends ListActivity {
 								assignments);
 						setListAdapter(adapter);
 						adapter.notifyDataSetChanged();
+
+						undoBarController.showUndoBar(true, "archived thingy",
+								null);
 					}
 				});
 		listView.setOnTouchListener(touchListener);
@@ -222,5 +241,42 @@ public class MainActivity extends ListActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onUndo(Parcelable token) {
+		final SQLiteHelper dbHelper = new SQLiteHelper(MainActivity.this);
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		db.execSQL("update " + SQLiteHelper.TABLE_ASSIGNMENTS + " set "
+				+ SQLiteHelper.COLUMN_ARCHIVED + "=0 where "
+				+ SQLiteHelper.COLUMN_ID + "="
+				+ Long.toString(recentlyArchivedId));
+
+		Cursor cursor = db.query(SQLiteHelper.TABLE_ASSIGNMENTS, null,
+				SQLiteHelper.COLUMN_ID + " = ?",
+				new String[] { Long.toString(recentlyArchivedId) }, null, null,
+				null);
+		cursor.moveToFirst();
+
+		Assignment assignment = new Assignment();
+		assignment.setId(cursor.getLong(0));
+		assignment.setDescription(cursor.getString(1));
+		assignment.setDateDue(cursor.getString(2));
+		assignment.setDateAssigned(cursor.getString(3));
+		assignment.setImageUri(cursor.getString(4));
+
+		Cursor schoolClassCursor = db.query(SQLiteHelper.TABLE_SCHOOL_CLASSES,
+				null, SQLiteHelper.COLUMN_ID + " = ?",
+				new String[] { Integer.toString(cursor.getInt(5)) }, null,
+				null, null, null);
+		schoolClassCursor.moveToFirst();
+		assignment.setSchoolClass(schoolClassCursor.getString(1));
+
+		assignment.setSchoolClassId(cursor.getInt(5));
+
+		assignments.add(recentlyArchivedListPos, assignment);
+		adapter = new AssignmentAdapter(MainActivity.this, assignments);
+		setListAdapter(adapter);
+		adapter.notifyDataSetChanged();
 	}
 }
