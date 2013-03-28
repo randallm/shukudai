@@ -9,8 +9,11 @@ import java.util.Calendar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,13 +26,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class PostAssignmentActivity extends Activity {
@@ -49,35 +51,6 @@ public class PostAssignmentActivity extends Activity {
 		setContentView(R.layout.activity_post_assignment);
 
 		initSchoolClassSpinner();
-
-		Button d1 = (Button) findViewById(R.id.d1);
-		d1.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				calculateDateDue("1d");
-			}
-		});
-		Button d2 = (Button) findViewById(R.id.d2);
-		d2.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				calculateDateDue("2d");
-			}
-		});
-		Button w1 = (Button) findViewById(R.id.w1);
-		w1.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				calculateDateDue("1w");
-			}
-		});
-		Button w2 = (Button) findViewById(R.id.w2);
-		w2.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				calculateDateDue("2w");
-			}
-		});
 	}
 
 	public void takePhoto(View v) {
@@ -111,10 +84,6 @@ public class PostAssignmentActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
-				// disable "Add" button until image saving process is done
-				LinearLayout postAssignmentButton = (LinearLayout) findViewById(R.id.postAssignmentButton);
-				postAssignmentButton.setClickable(false);
-
 				this.getContentResolver().notifyChange(photoUri, null);
 				ContentResolver cr = this.getContentResolver();
 
@@ -127,10 +96,17 @@ public class PostAssignmentActivity extends Activity {
 					fileOut.flush();
 					fileOut.close();
 
-					postAssignmentButton.setClickable(true);
+					RelativeLayout previewImageBox = (RelativeLayout) findViewById(R.id.previewImageBox);
+					previewImageBox.setVisibility(View.VISIBLE);
 
-					TextView photoStatus = (TextView) findViewById(R.id.photoStatus);
-					photoStatus.setText("Photo attached");
+					ImageView previewImage = (ImageView) findViewById(R.id.previewImage);
+					previewImage.setImageBitmap(photoBmp);
+
+					// postAssignmentButton.setClickable(true);
+
+					// TextView photoStatus = (TextView)
+					// findViewById(R.id.photoStatus);
+					// photoStatus.setText("Photo attached");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -146,25 +122,25 @@ public class PostAssignmentActivity extends Activity {
 		}
 	}
 
-	private void calculateDateDue(String preset) {
-		Button dateDueButton = (Button) findViewById(R.id.dateDue);
-		Calendar c = Calendar.getInstance();
-
-		if (preset.equals("1d")) {
-			c.add(Calendar.DATE, 1);
-		} else if (preset.equals("2d")) {
-			c.add(Calendar.DATE, 2);
-		} else if (preset.equals("1w")) {
-			c.add(Calendar.DATE, 7);
-		} else if (preset.equals("2w")) {
-			c.add(Calendar.DATE, 14);
-		}
-
-		String sYear = Integer.toString(c.get(Calendar.YEAR));
-		String sMonth = Integer.toString(c.get(Calendar.MONTH));
-		String sDay = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
-		dateDueButton.setText(sMonth + "/" + sDay + "/" + sYear);
-	}
+	// private void calculateDateDue(String preset) {
+	// Button dateDueButton = (Button) findViewById(R.id.dateDue);
+	// Calendar c = Calendar.getInstance();
+	//
+	// if (preset.equals("1d")) {
+	// c.add(Calendar.DATE, 1);
+	// } else if (preset.equals("2d")) {
+	// c.add(Calendar.DATE, 2);
+	// } else if (preset.equals("1w")) {
+	// c.add(Calendar.DATE, 7);
+	// } else if (preset.equals("2w")) {
+	// c.add(Calendar.DATE, 14);
+	// }
+	//
+	// String sYear = Integer.toString(c.get(Calendar.YEAR));
+	// String sMonth = Integer.toString(c.get(Calendar.MONTH));
+	// String sDay = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+	// dateDueButton.setText(sMonth + "/" + sDay + "/" + sYear);
+	// }
 
 	@SuppressLint("UseSparseArrays")
 	private void initSchoolClassSpinner() {
@@ -237,10 +213,43 @@ public class PostAssignmentActivity extends Activity {
 	}
 
 	public void cancelAssignment(View v) {
-		Intent mainActivityIntent = new Intent(this, MainActivity.class);
-		mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		startActivity(mainActivityIntent);
-		finish();
+		new AlertDialog.Builder(this)
+				.setTitle("Discard Assignment")
+				.setMessage("Are you sure you want to discard this assignment?")
+				.setPositiveButton("Discard Photo", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Intent mainActivityIntent = new Intent(
+								PostAssignmentActivity.this, MainActivity.class);
+						mainActivityIntent
+								.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+						startActivity(mainActivityIntent);
+						finish();
+					}
+				}).setNegativeButton("Continue Working", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				}).show();
+	}
+
+	public void cancelPhoto(View v) {
+		new AlertDialog.Builder(this).setTitle("Discard Photo")
+				.setMessage("Are you sure you want to discard this photo?")
+				.setPositiveButton("Discard Photo", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						photo = null;
+						photoUri = null;
+
+						RelativeLayout previewImageBox = (RelativeLayout) findViewById(R.id.previewImageBox);
+						previewImageBox.setVisibility(View.GONE);
+					}
+				}).setNegativeButton("Cancel", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				}).show();
 	}
 
 	@Override
@@ -255,8 +264,13 @@ public class PostAssignmentActivity extends Activity {
 		case android.R.id.home:
 			cancelAssignment(null);
 			return true;
+		case R.id.post_new_assignment_camera:
+			takePhoto(null);
+			return true;
+		case R.id.post_new_assignment:
+			postAssignment(null);
+			return true;
 		}
-
 		return super.onOptionsItemSelected(item);
 	}
 

@@ -12,63 +12,69 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/headerAssignmentDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:drawableBottom="@drawable/section_header"
-                android:paddingLeft="12dp"
-                android:text="@string/header_assignment_details"
-                android:textAppearance="?android:attr/listSeparatorTextViewStyle"
-                android:textColor="#31b6e7" />
+            <RelativeLayout
+                android:id="@+id/previewImageBox"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/previewImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scaleType="centerCrop" />
+
+                <ImageButton
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:onClick="cancelPhoto"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel" />
+            </RelativeLayout>
 
             <Spinner
                 android:id="@+id/classSpinner"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/headerAssignmentDetails"
-                android:layout_marginBottom="16dp"
+                android:layout_below="@+id/previewImageBox"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
-                android:gravity="center"
+                android:gravity="bottom"
                 android:paddingBottom="12dp"
-                android:paddingTop="12dp" />
+                android:paddingTop="12dp"
+                android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/headerDescription"
+            <Button
+                android:id="@+id/dateDue"
+                style="@android:style/Widget.DeviceDefault.Light.Spinner"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/classSpinner"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:drawableBottom="@drawable/section_header"
+                android:gravity="bottom"
+                android:hint="Date Due"
+                android:onClick="showDatePickerDialog"
                 android:paddingLeft="12dp"
-                android:text="@string/header_description"
-                android:textAppearance="?android:attr/listSeparatorTextViewStyle"
-                android:textColor="#31b6e7" />
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/description"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/headerDescription"
+                android:layout_below="@+id/dateDue"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
                 android:layout_marginTop="8dp"
-                android:ems="10"
-                android:gravity="top"
-                android:hint="@string/description_examples"
-                android:lines="6"
-                android:singleLine="false" />
+                android:hint="Description"
+                android:paddingLeft="16dp"
+                android:singleLine="false"
+                android:textSize="18sp" />
 
+            <!--
             <TextView
                 android:id="@+id/headerPhoto"
                 android:layout_width="fill_parent"
@@ -108,72 +114,11 @@
                     android:text="Photo not attached"
                     android:textSize="16sp" />
             </LinearLayout>
+            -->
 
-            <TextView
-                android:id="@+id/headerDueDate"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/takePhoto"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:drawableBottom="@drawable/section_header"
-                android:paddingLeft="12dp"
-                android:text="@string/header_due_date"
-                android:textAppearance="?android:attr/listSeparatorTextViewStyle"
-                android:textColor="#31b6e7" />
 
-            <LinearLayout
-                android:id="@+id/dateInfo"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/headerDueDate"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="8dp" >
-
-                <Button
-                    android:id="@+id/d1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="1d" />
-
-                <Button
-                    android:id="@+id/d2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="2d" />
-
-                <Button
-                    android:id="@+id/w1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="1w" />
-
-                <Button
-                    android:id="@+id/w2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="2w" />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/dateDue"
-                style="@android:style/Widget.DeviceDefault.Light.Spinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/dateInfo"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:gravity="center"
-                android:onClick="showDatePickerDialog"
-                android:text="Date Due" />
-
-            <LinearLayout
+            <!--
+              <LinearLayout
                 android:id="@+id/linearLayout1"
                 style="?android:attr/buttonBarStyle"
                 android:layout_width="match_parent"
@@ -232,7 +177,10 @@
                         android:clickable="false"
                         android:text="Cancel" />
                 </LinearLayout>
+                
+                
             </LinearLayout>
+            -->
         </RelativeLayout>
     </ScrollView>
 
