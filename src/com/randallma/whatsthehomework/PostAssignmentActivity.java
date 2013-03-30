@@ -193,24 +193,44 @@ public class PostAssignmentActivity extends Activity {
 	}
 
 	public void cancelAssignment(View v) {
-		new AlertDialog.Builder(this)
-				.setTitle("Discard Assignment")
-				.setMessage("Are you sure you want to discard this assignment?")
-				.setPositiveButton("Discard Photo", new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Intent mainActivityIntent = new Intent(
-								PostAssignmentActivity.this, MainActivity.class);
-						mainActivityIntent
-								.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-						startActivity(mainActivityIntent);
-						finish();
-					}
-				}).setNegativeButton("Continue Working", new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				}).show();
+		boolean descIsEmpty = ((EditText) findViewById(R.id.description))
+				.getText().toString().isEmpty();
+		boolean dateDueIsEmpty = ((Button) findViewById(R.id.dateDue))
+				.getText().toString().isEmpty();
+
+		if (!descIsEmpty || !dateDueIsEmpty || photoUri != null) {
+			new AlertDialog.Builder(this)
+					.setTitle("Discard Assignment")
+					.setMessage(
+							"Are you sure you want to discard this assignment?")
+					.setPositiveButton("Discard Assignment",
+							new OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									Intent mainActivityIntent = new Intent(
+											PostAssignmentActivity.this,
+											MainActivity.class);
+									mainActivityIntent
+											.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+									startActivity(mainActivityIntent);
+									finish();
+								}
+							})
+					.setNegativeButton("Continue Working",
+							new OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+								}
+							}).show();
+		} else {
+			Intent mainActivityIntent = new Intent(PostAssignmentActivity.this,
+					MainActivity.class);
+			mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			startActivity(mainActivityIntent);
+			finish();
+		}
 	}
 
 	public void cancelPhoto(View v) {

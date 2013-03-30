@@ -14,7 +14,8 @@
 
     <LinearLayout
         android:id="@+id/undobar"
-        style="@style/UndoBar" >
+        style="@style/UndoBar"
+        android:layout_alignParentBottom="true" >
 
         <TextView
             android:id="@+id/undobar_message"

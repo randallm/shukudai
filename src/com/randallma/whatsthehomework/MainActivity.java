@@ -168,8 +168,7 @@ public class MainActivity extends ListActivity implements UndoListener {
 						setListAdapter(adapter);
 						adapter.notifyDataSetChanged();
 
-						undoBarController.showUndoBar(true, "archived thingy",
-								null);
+						undoBarController.showUndoBar(true, "Archived", null);
 					}
 				});
 		listView.setOnTouchListener(touchListener);
