@@ -65,6 +65,7 @@ public class AssignmentAdapter extends BaseAdapter {
 		boolean imageExists = (assignmentArrayList.get(position).getImageUri() == null) ? false
 				: true;
 		if (imageExists == true) {
+			holder.txtThumbnail.setVisibility(View.VISIBLE);
 			holder.txtThumbnail.setImageResource(R.drawable.ic_content_picture);
 		} else {
 			holder.txtThumbnail.setVisibility(View.GONE);
