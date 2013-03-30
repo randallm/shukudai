@@ -163,9 +163,6 @@ public class MainActivity extends ListActivity implements UndoListener {
 										.getId());
 
 						assignments.remove(reverseSortedPositions[0]);
-						adapter = new AssignmentAdapter(MainActivity.this,
-								assignments);
-						setListAdapter(adapter);
 						adapter.notifyDataSetChanged();
 
 						undoBarController.showUndoBar(true, "Archived", null);
@@ -274,8 +271,6 @@ public class MainActivity extends ListActivity implements UndoListener {
 		assignment.setSchoolClassId(cursor.getInt(5));
 
 		assignments.add(recentlyArchivedListPos, assignment);
-		adapter = new AssignmentAdapter(MainActivity.this, assignments);
-		setListAdapter(adapter);
 		adapter.notifyDataSetChanged();
 	}
 }
