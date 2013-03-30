@@ -1,5 +1,6 @@
 package com.randallma.whatsthehomework;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -13,6 +14,21 @@ import android.widget.DatePicker;
 
 public class DateDuePickerFragment extends DialogFragment implements
 		OnDateSetListener {
+
+	public static String getReadableDate(int year, int month, int day) {
+		Calendar c = Calendar.getInstance();
+		c.set(year, month, day);
+
+		SimpleDateFormat weekdayNameFormat = new SimpleDateFormat("EEEE");
+		SimpleDateFormat monthNameFormat = new SimpleDateFormat("MMMM");
+
+		String sWeekday = weekdayNameFormat.format(c.getTime());
+		String sMonth = monthNameFormat.format(c.getTime());
+		String sDay = Integer.toString(day);
+		String sYear = Integer.toString(year);
+
+		return sWeekday + ", " + sMonth + " " + sDay + ", " + sYear;
+	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -28,12 +44,8 @@ public class DateDuePickerFragment extends DialogFragment implements
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
 		Activity a = getActivity();
-
 		Button dateDueButton = (Button) a.findViewById(R.id.dateDue);
-		String sYear = Integer.toString(year).substring(2, 4);
-		String sMonth = Integer.toString(month + 1);
-		String sDay = Integer.toString(day);
-		dateDueButton.setText(sMonth + "/" + sDay + "/" + sYear);
-	}
 
+		dateDueButton.setText(getReadableDate(year, month, day));
+	}
 }

@@ -3,7 +3,6 @@ package com.randallma.whatsthehomework;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -122,26 +121,6 @@ public class PostAssignmentActivity extends Activity {
 		}
 	}
 
-	// private void calculateDateDue(String preset) {
-	// Button dateDueButton = (Button) findViewById(R.id.dateDue);
-	// Calendar c = Calendar.getInstance();
-	//
-	// if (preset.equals("1d")) {
-	// c.add(Calendar.DATE, 1);
-	// } else if (preset.equals("2d")) {
-	// c.add(Calendar.DATE, 2);
-	// } else if (preset.equals("1w")) {
-	// c.add(Calendar.DATE, 7);
-	// } else if (preset.equals("2w")) {
-	// c.add(Calendar.DATE, 14);
-	// }
-	//
-	// String sYear = Integer.toString(c.get(Calendar.YEAR));
-	// String sMonth = Integer.toString(c.get(Calendar.MONTH));
-	// String sDay = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
-	// dateDueButton.setText(sMonth + "/" + sDay + "/" + sYear);
-	// }
-
 	@SuppressLint("UseSparseArrays")
 	private void initSchoolClassSpinner() {
 		schoolClassIds = new ArrayList<Integer>();
@@ -188,9 +167,10 @@ public class PostAssignmentActivity extends Activity {
 		assignment.setDateDue(((Button) findViewById(R.id.dateDue)).getText()
 				.toString());
 
-		String timeStamp = new SimpleDateFormat("MM/dd/yy").format(Calendar
-				.getInstance().getTime());
-		assignment.setDateAssigned(timeStamp);
+		Calendar c = Calendar.getInstance();
+		assignment.setDateAssigned(DateDuePickerFragment.getReadableDate(
+				c.get(Calendar.YEAR), c.get(Calendar.MONTH),
+				c.get(Calendar.DAY_OF_MONTH)));
 
 		if (photoUri != null) {
 			assignment.setImageUri(photoUri.toString());
