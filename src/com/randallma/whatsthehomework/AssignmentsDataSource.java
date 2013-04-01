@@ -25,7 +25,7 @@ public class AssignmentsDataSource {
 		dbHelper.close();
 	}
 
-	public Assignment createAssignment(Assignment assignment) {
+	public void createAssignment(Assignment assignment) {
 		ContentValues values = new ContentValues();
 
 		values.put(SQLiteHelper.COLUMN_DESCRIPTION, assignment.getDescription());
@@ -40,10 +40,54 @@ public class AssignmentsDataSource {
 		Cursor cursor = db.query(SQLiteHelper.TABLE_ASSIGNMENTS, null,
 				SQLiteHelper.COLUMN_ID + " = " + insertId, null, null, null,
 				null);
-		cursor.moveToFirst();
-		Assignment newAssignment = cursorToAssignment(cursor);
 		cursor.close();
-		return newAssignment;
+		// cursor.moveToFirst();
+		// Assignment newAssignment = cursorToAssignment(cursor);
+		// cursor.close();
+		// return newAssignment;
+	}
+
+	public void editAssignment(Assignment assignment) {
+		String description;
+		String updateStatement;
+
+		if (assignment.getDescription() == null) {
+			description = "";
+		} else {
+			description = assignment.getDescription();
+		}
+
+		if (assignment.getImageUri() == null) {
+			updateStatement = String
+					.format("update %s set %s = '%s', %s = '%s', %s = '%s', %s = null, %s = %s where %s = %s;",
+							SQLiteHelper.TABLE_ASSIGNMENTS,
+							SQLiteHelper.COLUMN_DESCRIPTION, description,
+							SQLiteHelper.COLUMN_DATE_DUE,
+							assignment.getDateDue(),
+							SQLiteHelper.COLUMN_DATE_ASSIGNED,
+							assignment.getDateAssigned(),
+							SQLiteHelper.COLUMN_IMAGE,
+							SQLiteHelper.COLUMN_SCHOOL_CLASS_ID,
+							Long.toString(assignment.getSchoolClassId()),
+							SQLiteHelper.COLUMN_ID,
+							Long.toString(assignment.getId()));
+		} else {
+			updateStatement = String
+					.format("update %s set %s = '%s', %s = '%s', %s = '%s', %s = '%s', %s = %s where %s = %s;",
+							SQLiteHelper.TABLE_ASSIGNMENTS,
+							SQLiteHelper.COLUMN_DESCRIPTION, description,
+							SQLiteHelper.COLUMN_DATE_DUE,
+							assignment.getDateDue(),
+							SQLiteHelper.COLUMN_DATE_ASSIGNED,
+							assignment.getDateAssigned(),
+							SQLiteHelper.COLUMN_IMAGE,
+							assignment.getImageUri(),
+							SQLiteHelper.COLUMN_SCHOOL_CLASS_ID,
+							Long.toString(assignment.getSchoolClassId()),
+							SQLiteHelper.COLUMN_ID,
+							Long.toString(assignment.getId()));
+		}
+		db.execSQL(updateStatement);
 	}
 
 	public void deleteAssignment(Assignment assignment) {

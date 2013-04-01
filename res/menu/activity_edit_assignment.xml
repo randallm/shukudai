@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/post_new_assignment_camera"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/post_new_assignment_camera"/>
+
+</menu>
