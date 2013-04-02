@@ -45,11 +45,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(TABLE_SCHOOL_CLASSES_CREATE);
 		db.execSQL(TABLE_ASSIGNMENTS_CREATE);
-		db.execSQL("insert into school_classes values(null, 'AP Class 20XX-20XX');");
-		db.execSQL("insert into assignments values(null, 'This is an example post.', 'Date Due', 'Date Assigned', null, 1, 0);");
-
-		db.execSQL("insert into school_classes values(null, 'AP Class2 20XX-20XX');");
-		db.execSQL("insert into assignments values(null, 'This is an example post2', 'Date Due2', 'Date Assigned2', null, 2, 0);");
+		db.execSQL("insert into school_classes values(null, 'Example Post');");
+		db.execSQL("insert into assignments values(null, 'This is an example post.', 'Wednesday, January 1, 3000', 'Wednesday, January 1, 3000', null, 1, 0);");
 	}
 
 	@Override

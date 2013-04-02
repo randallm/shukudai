@@ -89,16 +89,8 @@ public class PostAssignmentActivity extends Activity {
 			assignment.setDescription(cursor.getString(1));
 			assignment.setDateDue(cursor.getString(2));
 			assignment.setImageUri(cursor.getString(4));
+			assignment.setSchoolClassId(cursor.getInt(5));
 
-			Cursor schoolClassCursor = db.query(
-					SQLiteHelper.TABLE_SCHOOL_CLASSES, null,
-					SQLiteHelper.COLUMN_ID + " = ?",
-					new String[] { Integer.toString(cursor.getInt(5)) }, null,
-					null, null, null);
-			schoolClassCursor.moveToFirst();
-			assignment.setSchoolClassId(cursor.getLong(0));
-
-			schoolClassCursor.close();
 			cursor.close();
 
 			classSpinner.setSelection(schoolClassIds.indexOf((int) assignment
