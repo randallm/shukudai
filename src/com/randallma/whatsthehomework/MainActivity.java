@@ -240,6 +240,10 @@ public class MainActivity extends ListActivity implements UndoListener {
 			return true;
 		case R.id.menu_settings:
 			return true;
+		case R.id.menu_about:
+			Intent aboutIntent = new Intent(this, AboutActivity.class);
+			startActivity(aboutIntent);
+			finish();
 		default:
 			return super.onOptionsItemSelected(item);
 		}

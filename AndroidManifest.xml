@@ -43,6 +43,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.randallma.whatsthehomework.MainActivity" />
         </activity>
+        <activity
+            android:name="com.randallma.whatsthehomework.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
 
 </manifest>
