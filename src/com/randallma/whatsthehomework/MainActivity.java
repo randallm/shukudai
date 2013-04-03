@@ -29,8 +29,6 @@ import com.randallma.whatsthehomework.UndoBarController.UndoListener;
 
 public class MainActivity extends ListActivity implements UndoListener {
 
-	// public final static String MESSAGE_ASSIGNMENT_ID =
-	// "com.randallma.whatsthehomework.ASSIGNMENT_ID";
 	public final static String ASSIGNMENT_ID = "com.randallma.whatsthehomework.ASSIGNMENT_ID";
 
 	private AssignmentsDataSource dao;
@@ -62,10 +60,6 @@ public class MainActivity extends ListActivity implements UndoListener {
 				Object o = getListView().getItemAtPosition(position);
 				Assignment fullO = (Assignment) o;
 
-				// Intent assignmentIntent = new Intent(MainActivity.this,
-				// AssignmentActivity.class);
-				// assignmentIntent.putExtra(MESSAGE_ASSIGNMENT_ID,
-				// fullO.getId());
 				Intent assignmentIntent = new Intent(MainActivity.this,
 						PostAssignmentActivity.class);
 				assignmentIntent.putExtra(ASSIGNMENT_ID, fullO.getId());
@@ -244,6 +238,10 @@ public class MainActivity extends ListActivity implements UndoListener {
 			Intent aboutIntent = new Intent(this, AboutActivity.class);
 			startActivity(aboutIntent);
 			finish();
+			return true;
+		case R.id.menu_remove_highlighted_school_class:
+
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

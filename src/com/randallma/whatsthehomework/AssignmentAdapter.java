@@ -70,10 +70,10 @@ public class AssignmentAdapter extends BaseAdapter {
 		} else {
 			holder.txtThumbnail.setVisibility(View.GONE);
 		}
-		holder.txtDateDue.setText(assignmentArrayList.get(position)
-				.getDateDue());
-		holder.txtDateAssigned.setText(assignmentArrayList.get(position)
-				.getDateAssigned());
+		holder.txtDateDue.setText("Due "
+				+ assignmentArrayList.get(position).getDateDue());
+		holder.txtDateAssigned.setText("Assigned "
+				+ assignmentArrayList.get(position).getDateAssigned());
 		holder.txtDescription.setText(assignmentArrayList.get(position)
 				.getDescription());
 
