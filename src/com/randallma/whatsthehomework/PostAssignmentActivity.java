@@ -116,7 +116,9 @@ public class PostAssignmentActivity extends Activity {
 			}
 
 			editAssignmentId = assignment.getId();
-
+			if (assignment.getImageUri() != null) {
+				photoUri = Uri.parse(assignment.getImageUri());
+			}
 			editAssignmentDueDate = Calendar.getInstance();
 			SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM d, yyyy");
 			try {
