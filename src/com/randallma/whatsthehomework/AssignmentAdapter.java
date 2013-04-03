@@ -72,7 +72,7 @@ public class AssignmentAdapter extends BaseAdapter {
 		}
 		holder.txtDateDue.setText("Due "
 				+ assignmentArrayList.get(position).getDateDue());
-		holder.txtDateAssigned.setText("Assigned "
+		holder.txtDateAssigned.setText("Edited "
 				+ assignmentArrayList.get(position).getDateAssigned());
 		holder.txtDescription.setText(assignmentArrayList.get(position)
 				.getDescription());
