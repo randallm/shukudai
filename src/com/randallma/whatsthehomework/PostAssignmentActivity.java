@@ -342,6 +342,13 @@ public class PostAssignmentActivity extends Activity {
 				}).show();
 	}
 
+	public void openImageInGallery(View v) {
+		Intent galleryIntent = new Intent();
+		galleryIntent.setAction(Intent.ACTION_VIEW);
+		galleryIntent.setDataAndType(photoUri, "image/*");
+		startActivity(galleryIntent);
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (!assignmentInEditMode) {
