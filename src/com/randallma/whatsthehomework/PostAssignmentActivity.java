@@ -53,6 +53,7 @@ public class PostAssignmentActivity extends Activity {
 
 	private boolean assignmentInEditMode;
 	private long editAssignmentId;
+	private String editDateAssigned;
 	private Calendar editAssignmentDueDate;
 
 	@Override
@@ -88,6 +89,7 @@ public class PostAssignmentActivity extends Activity {
 			assignment.setId(cursor.getLong(0));
 			assignment.setDescription(cursor.getString(1));
 			assignment.setDateDue(cursor.getString(2));
+			assignment.setDateAssigned(cursor.getString(3));
 			assignment.setImageUri(cursor.getString(4));
 			assignment.setSchoolClassId(cursor.getInt(5));
 
@@ -115,6 +117,7 @@ public class PostAssignmentActivity extends Activity {
 				previewImageBox.setVisibility(View.GONE);
 			}
 
+			editDateAssigned = assignment.getDateAssigned();
 			editAssignmentId = assignment.getId();
 			if (assignment.getImageUri() != null) {
 				photoUri = Uri.parse(assignment.getImageUri());
@@ -256,9 +259,13 @@ public class PostAssignmentActivity extends Activity {
 		assignment.setDateDue(((Button) findViewById(R.id.dateDue)).getText()
 				.toString());
 
-		Calendar c = Calendar.getInstance();
-		assignment.setDateAssigned(getReadableDate(c.get(Calendar.YEAR),
-				c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)));
+		if (!assignmentInEditMode) {
+			Calendar c = Calendar.getInstance();
+			assignment.setDateAssigned(getReadableDate(c.get(Calendar.YEAR),
+					c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)));
+		} else {
+			assignment.setDateAssigned(editDateAssigned);
+		}
 
 		if (photoUri != null) {
 			assignment.setImageUri(photoUri.toString());
