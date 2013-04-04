@@ -169,7 +169,18 @@ public class PostAssignmentActivity extends Activity {
 							photoUri);
 
 					FileOutputStream fileOut = new FileOutputStream(photo);
+					if (photoBmp.getHeight() > 2048) {
+						photoBmp = Bitmap.createScaledBitmap(photoBmp,
+								(photoBmp.getWidth() * 1400 / photoBmp
+										.getHeight()), 1400, false);
+					} else if (photoBmp.getWidth() > 2048) {
+						photoBmp = Bitmap.createScaledBitmap(
+								photoBmp,
+								photoBmp.getHeight() * 1400
+										/ photoBmp.getWidth(), 1400, false);
+					}
 					photoBmp.compress(Bitmap.CompressFormat.JPEG, 100, fileOut);
+
 					fileOut.flush();
 					fileOut.close();
 
