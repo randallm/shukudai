@@ -45,6 +45,8 @@
             android:name="com.randallma.whatsthehomework.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
+
+        <service android:name=".AssignmentDueService" />
     </application>
 
 </manifest>

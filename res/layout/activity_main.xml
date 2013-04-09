@@ -13,6 +13,19 @@
         android:listSelector="@android:color/transparent" >
     </ListView>
 
+    <RelativeLayout
+        android:id="@android:id/empty"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:onClick="addNewSchoolClass"
+            android:text="Add New Class" />
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/undobar"
         style="@style/UndoBar"

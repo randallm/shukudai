@@ -178,7 +178,7 @@ public class MainActivity extends ListActivity implements UndoListener {
 		listView.setOnScrollListener(null);
 	}
 
-	private void addNewSchoolClass() {
+	public void addNewSchoolClass(View v) {
 		AlertDialog.Builder newClassPopup = new AlertDialog.Builder(this);
 		newClassPopup.setTitle("Add New Class");
 		desiredTitle = new EditText(this);
@@ -224,13 +224,20 @@ public class MainActivity extends ListActivity implements UndoListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.post_new_assignment:
-			Intent postAssignment = new Intent(this,
-					PostAssignmentActivity.class);
-			startActivity(postAssignment);
-			finish();
+			if (schoolClassItems.size() == 1) {
+				Toast.makeText(this,
+						"Must add class before creating assignment",
+						Toast.LENGTH_LONG).show();
+			} else {
+				Intent postAssignment = new Intent(this,
+						PostAssignmentActivity.class);
+				startActivity(postAssignment);
+				finish();
+			}
 			return true;
 		case R.id.add_new_school_class:
-			addNewSchoolClass();
+			addNewSchoolClass(null);
+			initSchoolClassSpinner();
 			return true;
 		case R.id.menu_settings:
 			return true;
@@ -240,7 +247,7 @@ public class MainActivity extends ListActivity implements UndoListener {
 			finish();
 			return true;
 		case R.id.menu_remove_highlighted_school_class:
-
+			System.out.println(getActionBar().getSelectedTab().getText());
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
