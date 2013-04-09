@@ -30,12 +30,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	public static final String TABLE_ASSIGNMENTS_CREATE = "create table "
 			+ TABLE_ASSIGNMENTS + "(" + COLUMN_ID
 			+ " integer primary key autoincrement, " + COLUMN_DESCRIPTION
-			+ " text, " + COLUMN_DATE_DUE + " char, " + COLUMN_DATE_ASSIGNED
-			+ " char not null, " + COLUMN_IMAGE + " char, "
-			+ COLUMN_SCHOOL_CLASS_ID + " integer, foreign key("
-			+ COLUMN_SCHOOL_CLASS_ID + ") references " + TABLE_SCHOOL_CLASSES
-			+ "(" + COLUMN_ID + "), " + COLUMN_ARCHIVED
-			+ " boolean default 0);";
+			+ " text, " + COLUMN_DATE_DUE + " char," + COLUMN_DATE_ASSIGNED
+			+ " char," + COLUMN_IMAGE + " char," + COLUMN_SCHOOL_CLASS_ID
+			+ " integer," + COLUMN_ARCHIVED
+			+ " boolean default 0, foreign key(" + COLUMN_SCHOOL_CLASS_ID
+			+ ") references " + TABLE_SCHOOL_CLASSES + "(" + COLUMN_ID + "));";
 
 	public SQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -44,6 +43,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(TABLE_SCHOOL_CLASSES_CREATE);
+		System.out.println(TABLE_ASSIGNMENTS_CREATE);
 		db.execSQL(TABLE_ASSIGNMENTS_CREATE);
 		db.execSQL("insert into school_classes values(null, 'Example Post');");
 		db.execSQL("insert into assignments values(null, 'This is an example post.', 'Wednesday, January 1, 3000', 'Wednesday, January 1, 3000', null, 1, 0);");
