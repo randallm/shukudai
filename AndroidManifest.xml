@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.randallma.whatsthehomework"
+    package="com.randallma.shukudai"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.randallma.whatsthehomework.MainActivity"
+            android:name="com.randallma.shukudai.MainActivity"
             android:configChanges="orientation" >
             <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.MAIN" />
@@ -28,25 +28,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.randallma.whatsthehomework.PostAssignmentActivity"
+            android:name="com.randallma.shukudai.PostAssignmentActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_post_assignment"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.randallma.whatsthehomework.AssignmentActivity"
+            android:name="com.randallma.shukudai.AssignmentActivity"
             android:label="@string/title_activity_assignment"
-            android:parentActivityName="com.randallma.whatsthehomework.MainActivity" >
+            android:parentActivityName="com.randallma.shukudai.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.randallma.whatsthehomework.MainActivity" />
+                android:value="shukudaik.MainActivity" />
         </activity>
         <activity
-            android:name="com.randallma.whatsthehomework.AboutActivity"
+            android:name="com.randallma.shukudai.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
 
-        <service android:name=".AssignmentDueService" />
+        <service android:name="com.randallma.shukudai.AssignmentDueService" />
     </application>
 
 </manifest>

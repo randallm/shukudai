@@ -1,4 +1,4 @@
-package com.randallma.whatsthehomework;
+package com.randallma.shukudai;
 
 import java.util.ArrayList;
 

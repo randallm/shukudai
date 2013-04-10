@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.randallma.whatsthehomework;
+package com.randallma.shukudai;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package com.randallma.whatsthehomework;
+package com.randallma.shukudai;
 
 import java.util.ArrayList;
 
@@ -25,11 +25,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.randallma.whatsthehomework.UndoBarController.UndoListener;
+import com.randallma.shukudai.UndoBarController.UndoListener;
 
 public class MainActivity extends ListActivity implements UndoListener {
 
-	public final static String ASSIGNMENT_ID = "com.randallma.whatsthehomework.ASSIGNMENT_ID";
+	public final static String ASSIGNMENT_ID = "com.randallma.shukudai.ASSIGNMENT_ID";
 
 	private AssignmentsDataSource dao;
 	private AssignmentAdapter adapter;

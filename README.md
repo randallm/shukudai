@@ -1,7 +1,7 @@
-What's the Homework?
-====================
+Shukudai
+========
 
-What's the Homework is an Android homework planner/notifier. It is available to download for free on the [Google Play Store](https://play.google.com/store/apps/details?id=com.randallma.whatsthehomework).
+What's the Homework is an Android homework planner/notifier. It is available to download for free on the [Google Play Store](https://play.google.com/store/apps/details?id=com.randallma.shukudai).
 
 Features Released
 -----------------
@@ -18,4 +18,8 @@ Features Being Tested
 Licensing
 ---------
 
-What's the Homework? (by Randall Ma) is released under the Apache License, Version 2.0. The full text of the license can be found on [apache.org](https://www.apache.org/licenses/LICENSE-2.0).
+Shukudai (by Randall Ma) is released under the Apache License, Version 2.0.
+
+"Undo Bar" and "Swipe to Dismiss" code by Roman Nurik is included in Shukudai. These projects ar licensed under the Apache License, Version 2.0.
+
+The full text of the Apache license can be found on [apache.org](https://www.apache.org/licenses/LICENSE-2.0).

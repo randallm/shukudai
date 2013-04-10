@@ -1,4 +1,4 @@
-package com.randallma.whatsthehomework;
+package com.randallma.shukudai;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,7 +21,7 @@ public class AboutActivity extends Activity {
 
 		TextView v = (TextView) findViewById(R.id.about);
 		v.setText(Html
-				.fromHtml("<p>What's the Homework (WTH) is an Android homework manager/notifier by <a href=\"http://randallma.com\">Randall Ma</a>. WTH is a free, open source project available on <a href=\"http://github.com/randallm/whatsthehomework_android\">GitHub</a>. It is licensed under the Apache License 2.0. The full text of the license can be found at <a href=\"https://www.apache.org/licenses/LICENSE-2.0\">apache.org</a></p><p>\"Undo Bar\" and \"Swipe to Dismiss\" code, by Roman Nurik, is included in this project. These projects are licensed under the Apache License, Version 2.0. The full text of the license can be found at <a href=\"https://www.apache.org/licenses/LICENSE-2.0\">apache.org</a></p>"));
+				.fromHtml("<p>Shukudai is an Android homework manager/notifier by <a href=\"http://randallma.com\">Randall Ma</a>. Source code available on <a href=\"http://github.com/randallm/shukudai\">GitHub</a>.</p><p>\"Undo Bar\" and \"Swipe to Dismiss\" code by Roman Nurik, is included in Shukudai. These projects are licensed under the Apache License, Version 2.0. The full text of the license can be found at <a href=\"https://www.apache.org/licenses/LICENSE-2.0\">apache.org</a></p>"));
 		v.setMovementMethod(LinkMovementMethod.getInstance());
 	}
 

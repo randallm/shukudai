@@ -1,4 +1,4 @@
-package com.randallma.whatsthehomework;
+package com.randallma.shukudai;
 
 public class Assignment {
 	private long id;
