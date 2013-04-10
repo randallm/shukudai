@@ -214,6 +214,18 @@ public class MainActivity extends ListActivity implements UndoListener {
 		newClassPopupDialog.show();
 	}
 
+	public void addNewAssignment(View v) {
+		if (schoolClassItems.size() == 1) {
+			Toast.makeText(this, "Must add class before creating assignment",
+					Toast.LENGTH_LONG).show();
+		} else {
+			Intent postAssignment = new Intent(this,
+					PostAssignmentActivity.class);
+			startActivity(postAssignment);
+			finish();
+		}
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
@@ -224,16 +236,7 @@ public class MainActivity extends ListActivity implements UndoListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.post_new_assignment:
-			if (schoolClassItems.size() == 1) {
-				Toast.makeText(this,
-						"Must add class before creating assignment",
-						Toast.LENGTH_LONG).show();
-			} else {
-				Intent postAssignment = new Intent(this,
-						PostAssignmentActivity.class);
-				startActivity(postAssignment);
-				finish();
-			}
+			addNewAssignment(null);
 			return true;
 		case R.id.add_new_school_class:
 			addNewSchoolClass(null);
