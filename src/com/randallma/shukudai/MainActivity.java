@@ -23,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.randallma.shukudai.UndoBarController.UndoListener;
@@ -35,6 +36,7 @@ public class MainActivity extends ListActivity implements UndoListener {
 	private AssignmentAdapter adapter;
 	private ArrayList<Assignment> assignments;
 
+	private TextView emptyText;
 	private ArrayAdapter<String> classSpinnerAdapter;
 	private ArrayList<Integer> schoolClassIds;
 	private ArrayList<String> schoolClassItems;
@@ -72,6 +74,8 @@ public class MainActivity extends ListActivity implements UndoListener {
 	}
 
 	private void initSchoolClassSpinner() {
+		emptyText = (TextView) findViewById(R.id.noNewAssignmentsText);
+
 		schoolClassIds = new ArrayList<Integer>();
 		schoolClassItems = new ArrayList<String>();
 
@@ -114,6 +118,9 @@ public class MainActivity extends ListActivity implements UndoListener {
 							assignments);
 					setListAdapter(adapter);
 					adapter.notifyDataSetChanged();
+
+					emptyText.setText(getResources().getString(
+							R.string.empty_text));
 				} else {
 					disableSwipe();
 
@@ -125,6 +132,9 @@ public class MainActivity extends ListActivity implements UndoListener {
 							assignments);
 					setListAdapter(adapter);
 					adapter.notifyDataSetChanged();
+
+					emptyText.setText(getResources().getString(
+							R.string.empty_text_detailed));
 				}
 				dao.close();
 				return false;

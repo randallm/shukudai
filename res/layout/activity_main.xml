@@ -27,7 +27,7 @@
             android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
-            android:text="No unfinished assignments!"
+            android:textIsSelectable="false"
             android:textSize="26sp" />
 
         <Button
@@ -38,7 +38,7 @@
             android:layout_centerHorizontal="true"
             android:fontFamily="sans-serif-condensed"
             android:onClick="addNewSchoolClass"
-            android:text="Add New Class" />
+            android:text="@string/empty_add_class" />
 
         <Button
             android:layout_width="250dp"
@@ -47,7 +47,7 @@
             android:layout_centerHorizontal="true"
             android:fontFamily="sans-serif-condensed"
             android:onClick="addNewAssignment"
-            android:text="Add New Assignment" />
+            android:text="@string/empty_add_assignment" />
     </RelativeLayout>
 
     <LinearLayout
@@ -57,7 +57,8 @@
 
         <TextView
             android:id="@+id/undobar_message"
-            style="@style/UndoBarMessage" />
+            style="@style/UndoBarMessage"
+            android:textIsSelectable="false" />
 
         <Button
             android:id="@+id/undobar_button"

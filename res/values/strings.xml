@@ -26,5 +26,9 @@
     <string name="undo">Undo</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="empty_text">No unfinished assignments!</string>
+    <string name="empty_text_detailed">No new assignments!</string>
+    <string name="empty_add_assignment">Add New Assignment</string>
+    <string name="empty_add_class">Add New Class</string>
 
 </resources>
