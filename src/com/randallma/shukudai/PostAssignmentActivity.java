@@ -128,7 +128,7 @@ public class PostAssignmentActivity extends Activity {
 				editAssignmentDueDate
 						.setTime(sdf.parse(assignment.getDateDue()));
 			} catch (ParseException e) {
-				e.printStackTrace();
+				Log.i(PostAssignmentActivity.class.getName(), "Blank date set");
 			}
 		}
 	}

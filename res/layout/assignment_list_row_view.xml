@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
@@ -15,63 +15,42 @@
         android:orientation="vertical" >
 
         <TextView
+            android:id="@+id/dateDue"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#eeeeee"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textSize="24sp" />
+
+        <TextView
             android:id="@+id/schoolClass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_toRightOf="@+id/dateDue"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/dateDue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp" />
-
-        <TextView
-            android:id="@+id/dateAssigned"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp" />
-
-        <!--
-             View
-            android:id="@+id/separator"
+            android:id="@+id/description"
             android:layout_width="fill_parent"
-            android:layout_height="6dp"
-            android:layout_marginBottom="12dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/schoolClass"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
-            android:background="@android:color/holo_blue_light"
-            android:visibility="visible" /
-        -->
+            android:layout_toLeftOf="@+id/thumbnail"
+            android:layout_toRightOf="@+id/dateDue"
+            android:ellipsize="end"
+            android:singleLine="true" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp" >
-
-            <ImageView
-                android:id="@+id/thumbnail"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:paddingRight="12dp" />
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:maxLines="4"
-                android:minLines="4"
-                android:singleLine="false" />
-        </LinearLayout>
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerCrop" />
+    </RelativeLayout>
 
 </FrameLayout>

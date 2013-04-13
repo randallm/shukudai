@@ -47,6 +47,15 @@
         </activity>
 
         <service android:name="com.randallma.shukudai.AssignmentDueService" />
+
+        <activity
+            android:name="com.randallma.shukudai.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="com.randallma.shudukai.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.randallma.shudukai.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
