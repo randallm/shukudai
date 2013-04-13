@@ -215,8 +215,10 @@ public class PostAssignmentActivity extends Activity {
 		final SQLiteHelper dbHelper = new SQLiteHelper(this);
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-		Cursor cursor = db.query(SQLiteHelper.TABLE_SCHOOL_CLASSES, null, null,
-				null, null, null, SQLiteHelper.COLUMN_ID + " DESC");
+		Cursor cursor = db
+				.query(SQLiteHelper.TABLE_SCHOOL_CLASSES, null, null, null,
+						null, null, SQLiteHelper.COLUMN_TITLE
+								+ " COLLATE NOCASE");
 		cursor.moveToFirst();
 		for (int i = 0; i < cursor.getCount(); i++) {
 			schoolClassIds.add(cursor.getInt(0));
