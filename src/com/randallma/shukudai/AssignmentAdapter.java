@@ -115,10 +115,16 @@ public class AssignmentAdapter extends BaseAdapter {
 			Log.i(PostAssignmentActivity.class.getName(), "Blank date set");
 		}
 		Calendar today = Calendar.getInstance();
-		long daysDiff = (dateDue.getTimeInMillis() - today.getTimeInMillis()) / 86400000;
-		holder.txtDateDue.setText(Long.toString(daysDiff) + "d");
-		if (daysDiff <= 0) {
+		long daysDiff = ((dateDue.getTimeInMillis() - today.getTimeInMillis()) / 86400000) + 1;
+
+		if ((daysDiff <= 0)
+				|| (dateDue.getTime().getDate() == today.getTime().getDate()
+						&& dateDue.getTime().getMonth() == today.getTime()
+								.getMonth() && dateDue.getTime().getYear() == today
+						.getTime().getYear())) {
 			holder.txtDateDue.setText("Due");
+		} else {
+			holder.txtDateDue.setText(Long.toString(daysDiff) + "d");
 		}
 
 		// Set Description
