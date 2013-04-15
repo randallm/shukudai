@@ -20,7 +20,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="add_new_school_class">New Class</string>
-    <string name="menu_remove_highlighted_school_class">Remove Class</string>
+    <string name="menu_manage_school_classes">Manage Classes</string>
     <string name="action">Perform action</string>
     <string name="undobar_sample_message">Action performed.</string>
     <string name="undo">Undo</string>
@@ -30,5 +30,7 @@
     <string name="empty_text_detailed">No new assignments!</string>
     <string name="empty_add_assignment">Add New Assignment</string>
     <string name="empty_add_class">Add New Class</string>
+    <string name="title_activity_manage_school_class">Manage Classes</string>
+    <string name="example_school_class_title">Title (ex: P1 AP Chemistry):</string>
 
 </resources>

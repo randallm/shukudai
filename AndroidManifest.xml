@@ -56,6 +56,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.randallma.shudukai.MainActivity" />
         </activity>
+        <activity
+            android:name="com.randallma.shukudai.ManageSchoolClassActivity"
+            android:label="@string/title_activity_manage_school_class"
+            android:parentActivityName="com.randallma.shukudai.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.randallma.shukudai.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

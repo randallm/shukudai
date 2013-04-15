@@ -193,7 +193,8 @@ public class MainActivity extends ListActivity implements UndoListener {
 		newClassPopup.setTitle("Add New Class");
 		desiredTitle = new EditText(this);
 		newClassPopup.setView(desiredTitle);
-		newClassPopup.setMessage("Title (ex: P1 AP Chemistry):");
+		newClassPopup.setMessage(getResources().getString(
+				R.string.example_school_class_title));
 		newClassPopup.setPositiveButton("Add", new OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -259,8 +260,16 @@ public class MainActivity extends ListActivity implements UndoListener {
 			startActivity(aboutIntent);
 			finish();
 			return true;
-		case R.id.menu_remove_highlighted_school_class:
-			System.out.println(getActionBar().getSelectedTab().getText());
+		case R.id.menu_manage_school_classes:
+			if (schoolClassIds.size() > 1) {
+				Intent manageSchoolClassActivity = new Intent(this,
+						ManageSchoolClassActivity.class);
+				startActivity(manageSchoolClassActivity);
+				finish();
+			} else {
+				Toast.makeText(this, "No classes added yet", Toast.LENGTH_LONG)
+						.show();
+			}
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

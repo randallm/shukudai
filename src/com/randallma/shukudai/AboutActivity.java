@@ -27,8 +27,7 @@ public class AboutActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		Intent mainActivityIntent = new Intent(AboutActivity.this,
-				MainActivity.class);
+		Intent mainActivityIntent = new Intent(this, MainActivity.class);
 		mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		startActivity(mainActivityIntent);
 		finish();
@@ -36,8 +35,7 @@ public class AboutActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent mainActivityIntent = new Intent(AboutActivity.this,
-				MainActivity.class);
+		Intent mainActivityIntent = new Intent(this, MainActivity.class);
 		mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 		startActivity(mainActivityIntent);
 		finish();
