@@ -6,14 +6,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 
 public class AssignmentDueService extends IntentService {
 
-	public AssignmentDueService(String name) {
-		super(name);
+	public AssignmentDueService() {
+		super("AssignmentDueService");
 	}
 
 	@Override
@@ -21,6 +23,7 @@ public class AssignmentDueService extends IntentService {
 		ArrayList<Assignment> assignmentsDueSoon = new ArrayList<Assignment>();
 
 		AssignmentsDataSource dao = new AssignmentsDataSource(this);
+		dao.open();
 		ArrayList<Assignment> newAssignments = dao.getNewAssignments();
 
 		for (Assignment assignment : newAssignments) {
@@ -34,16 +37,56 @@ public class AssignmentDueService extends IntentService {
 
 			Calendar today = Calendar.getInstance();
 
-			double daysDiff = (dateDue.getTimeInMillis() - today
-					.getTimeInMillis()) / 86400000.0;
-			if (daysDiff < 1.0) {
+			long daysDiff = ((dateDue.getTimeInMillis() - today
+					.getTimeInMillis()) / 86400000) + 1;
+
+			if ((daysDiff <= 0)
+					|| (daysDiff > 1)
+					|| (dateDue.getTime().getDate() == today.getTime()
+							.getDate()
+							&& dateDue.getTime().getMonth() == today.getTime()
+									.getMonth() && dateDue.getTime().getYear() == today
+							.getTime().getYear())) {
+			} else {
 				assignmentsDueSoon.add(assignment);
 			}
 		}
 
-		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
-				this).setSmallIcon(R.drawable.ic_menu_edit).setContentTitle(
-				"1337 Assignments Due Soon");
+		dao.close();
+
+		Notification.Builder notificationBuilder = new Notification.Builder(
+				this);
+		if (assignmentsDueSoon.size() == 1) {
+			Intent assignmentIntent = new Intent(this,
+					PostAssignmentActivity.class);
+			assignmentIntent.putExtra(MainActivity.ASSIGNMENT_ID,
+					assignmentsDueSoon.get(0).getId());
+			PendingIntent assignmentPIntent = PendingIntent.getActivity(this,
+					0, assignmentIntent, 0);
+			notificationBuilder = new Notification.Builder(this);
+			notificationBuilder.setContentTitle("Assignment due soon");
+			notificationBuilder.setContentText(assignmentsDueSoon.get(0)
+					.getSchoolClass()
+					+ " - "
+					+ assignmentsDueSoon.get(0).getDescription());
+			notificationBuilder.setSmallIcon(R.drawable.ic_menu_edit);
+			notificationBuilder.setContentIntent(assignmentPIntent);
+		} else if (assignmentsDueSoon.size() > 1) {
+			Intent assignmentIntent = new Intent(this, MainActivity.class);
+			PendingIntent assignmentPIntent = PendingIntent.getActivity(this,
+					0, assignmentIntent, 0);
+			notificationBuilder = new Notification.Builder(this);
+			notificationBuilder.setContentTitle(Integer
+					.toString(assignmentsDueSoon.size())
+					+ " assignments due soon");
+			notificationBuilder.setSmallIcon(R.drawable.ic_menu_edit);
+			notificationBuilder.setContentIntent(assignmentPIntent);
+		}
+
+		Notification notification = notificationBuilder.build();
+		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		notificationManager.notify(0, notification);
 	}
 
 	@Override

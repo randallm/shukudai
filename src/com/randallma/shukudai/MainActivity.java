@@ -1,13 +1,17 @@
 package com.randallma.shukudai;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -71,6 +75,12 @@ public class MainActivity extends ListActivity implements UndoListener {
 
 		undoBarController = new UndoBarController(findViewById(R.id.undobar),
 				this);
+
+		Intent service = new Intent(this, AssignmentDueService.class);
+		PendingIntent pIntent = PendingIntent.getService(this, 0, service, 0);
+		AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		alarm.setRepeating(AlarmManager.RTC, Calendar.getInstance()
+				.getTimeInMillis(), 86400000, pIntent);
 	}
 
 	private void initSchoolClassSpinner() {

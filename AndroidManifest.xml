@@ -46,7 +46,9 @@
             android:label="@string/title_activity_about" >
         </activity>
 
-        <service android:name="com.randallma.shukudai.AssignmentDueService" />
+        <service
+            android:name="com.randallma.shukudai.AssignmentDueService"
+            android:process=":shukudai_due_service" />
 
         <activity
             android:name="com.randallma.shukudai.SettingsActivity"
