@@ -39,7 +39,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 public class PostAssignmentActivity extends Activity {
 
@@ -285,8 +284,6 @@ public class PostAssignmentActivity extends Activity {
 			dao.editAssignment(assignment);
 		}
 		dao.close();
-
-		Toast.makeText(this, "Assignment Saved", Toast.LENGTH_SHORT).show();
 
 		Intent completedPostIntent = new Intent(this, MainActivity.class);
 		startActivity(completedPostIntent);
