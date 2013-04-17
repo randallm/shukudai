@@ -36,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/noNewAssignmentsText"
             android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif-condensed"
             android:onClick="addNewSchoolClass"
             android:text="@string/empty_add_class" />
 
@@ -45,7 +44,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/addNewSchoolClassButton"
             android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif-condensed"
             android:onClick="addNewAssignment"
             android:text="@string/empty_add_assignment" />
     </RelativeLayout>
