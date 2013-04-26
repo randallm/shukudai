@@ -1,7 +1,7 @@
 Shukudai
 ========
 
-What's the Homework is an Android homework planner/notifier. It is available to download for free on the [Google Play Store](https://play.google.com/store/apps/details?id=com.randallma.shukudai).
+What's the Homework is an Android homework planner/notifier. It is available to download for free on the [Google Play Store](https://play.google.com/store/apps/details?id=com.randallma.shukudai). Major refactoring of code to come before any promotion or advertising. :)
 
 Features Released
 -----------------
