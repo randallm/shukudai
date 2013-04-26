@@ -159,15 +159,17 @@ public class ManageSchoolClassActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						ArrayList<String> assignments = new ArrayList<String>();
 
-						Cursor cursor = db.query(
-								SQLiteHelper.TABLE_ASSIGNMENTS,
-								null,
-								SQLiteHelper.COLUMN_SCHOOL_CLASS_ID
-										+ " = "
-										+ schoolClassIds.get(classSpinner
-												.getSelectedItemPosition()),
-								null, null, null, SQLiteHelper.COLUMN_ID
-										+ " DESC");
+						Cursor cursor = db
+								.query(SQLiteHelper.TABLE_ASSIGNMENTS,
+										null,
+										SQLiteHelper.COLUMN_SCHOOL_CLASS_ID
+												+ " = "
+												+ schoolClassIds.get(classSpinner
+														.getSelectedItemPosition())
+												+ " AND "
+												+ SQLiteHelper.COLUMN_ARCHIVED
+												+ " = 1", null, null, null,
+										SQLiteHelper.COLUMN_ID + " DESC");
 						cursor.moveToFirst();
 						while (!cursor.isAfterLast()) {
 							assignments.add(Long.toString(cursor.getLong(0)));
